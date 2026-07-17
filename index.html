@@ -59,7 +59,7 @@ ul{list-style:none}
 .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
 
 /* ── NAV ────────────────────────────────────────────────── */
-
+  
 nav{
   position:fixed;top:0;left:0;right:0;z-index:100;
   padding:1.1rem 0;
@@ -572,6 +572,7 @@ footer{
     <ul class="nav-links">
       <li><a href="#servicos">Serviços</a></li>
       <li><a href="#processo">Processo</a></li>
+      <li><a href="#portfolio">Portfólio</a></li>
       <li><a href="#contato" class="nav-cta">Fale Conosco →</a></li>
     </ul>
     <div class="nav-right">
@@ -590,6 +591,7 @@ footer{
 <div class="mobile-menu" id="mobileMenu">
   <a href="#servicos" class="mob-link">Serviços</a>
   <a href="#processo" class="mob-link">Processo</a>
+  <li><a href="#portfolio">Portfólio</a></li>
   <a href="#contato" class="mob-link" style="color:var(--gold-hi)">Contato</a>
 </div>
 
@@ -720,6 +722,57 @@ footer{
 </section>
 
 <!-- PORTFOLIO -->
+<section id="portfolio">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">Projetos recentes</span>
+      <h2 class="section-title">Trabalhos que nos <span class="gold">orgulham</span></h2>
+      <div class="divider"></div>
+    </div>
+    <div class="portfolio-grid">
+      <div class="portfolio-card reveal">
+        <a href="https://pinheiromichoadv.vercel.app/" target="_blank">
+          <div class="portfolio-img p1">
+            <span><img src='pinheiromicho.png' alt='Pinheiro Micho Advogados'></span>
+            <div class="portfolio-overlay"></div>
+          </div>
+        </a>
+        <div class="portfolio-arrow"><a href="https://pinheiromichoadv.vercel.app/" target="_blank">↗</a></div>
+        <div class="portfolio-info">
+          <h3>Pinheiro Micho Advogados</h3>
+          <p>Landing page para Advocacia</p>
+        </div>
+      </div>
+      <div class="portfolio-card reveal" style="transition-delay:.1s">
+        <a href="https://site-shine-rio.vercel.app/" target="_blank">
+          <div class="portfolio-img p2">
+            <span><img src='shinerio.png' alt='Shinerio'></span>
+            <div class="portfolio-overlay"></div>
+          </div>
+        </a>
+        <div class="portfolio-arrow"><a href="https://site-shine-rio.vercel.app/" target="_blank">↗</a></div>
+        <div class="portfolio-info">
+          <h3>Shine Rio Group</h3>
+          <p>Landing page para empresa de prestação de serviços</p>
+        </div>
+      </div>
+      <div class="portfolio-card reveal" style="transition-delay:.2s">
+        <a href="https://site-rairorh.vercel.app/" target="_blank">
+          <div class="portfolio-img p3">
+            <span><img src='railorh.png' alt='Rai loRH'></span>
+            <div class="portfolio-overlay"></div>
+          </div>
+        </a>
+        <div class="portfolio-arrow"><a href="https://site-rairorh.vercel.app/" target="_blank">↗</a></div>
+        <div class="portfolio-info">
+          <h3>Railo RH</h3>
+          <p>Sistema de gestão de recursos humanos</p>
+        </div>
+      </div>
+    
+    </div>
+  </div>
+</section>
 
 
 <!-- TESTIMONIALS -->
