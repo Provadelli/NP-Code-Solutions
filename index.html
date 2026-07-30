@@ -163,10 +163,10 @@ nav{
 }
 .hero-eyebrow{
   display:inline-flex;align-items:center;gap:.6rem;
-  font-size:.78rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;
+  font-size:.7rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;
   color:var(--gold-lo);
-  border:1px solid rgba(201,146,42,.3);
-  padding:.35rem .9rem;border-radius:100px;
+  
+  padding:.35rem .9rem;
   margin-bottom:1.8rem;
 }
 .hero-eyebrow::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--gold-hi);animation:pulse 2s infinite}
@@ -286,13 +286,14 @@ section{padding:6rem 0}
 .service-card:hover{border-color:rgba(201,146,42,.35);transform:translateY(-4px);box-shadow:0 20px 50px rgba(0,0,0,.25)}
 .service-card:hover::before{opacity:1}
 .service-icon{
-  width:48px;height:48px;
-  background:rgba(201,146,42,.10);
-  border:1px solid rgba(201,146,42,.2);
-  border-radius:12px;
-  display:flex;align-items:center;justify-content:center;
+  
+  display:flex;align-items:center;justify-content:flex-start;
   margin-bottom:1.4rem;
-  font-size:1.2rem;
+  font-size:1rem;
+  font-family: 'Courier New', Courier, monospace;
+  color:var(--gold-hi);
+  font-weight: 700;
+
 }
 .service-card h3{
   font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;
@@ -421,6 +422,7 @@ section{padding:6rem 0}
   padding:1rem;background:var(--bg-card);border:1px solid var(--border);
   border-radius:10px;margin-bottom:.75rem;
   font-size:.85rem;
+  margin-top: 10px;
   transition:border-color var(--transition);
 }
 .contact-detail:hover{border-color:rgba(201,146,42,.3)}
@@ -601,7 +603,7 @@ footer{
   <div class="hero-grid-lines"></div>
   <div class="container hero-content">
     <div class="hero-text reveal">
-      <div class="hero-eyebrow">Websites Premium</div>
+      <div class="hero-eyebrow">Sites profissionais - SEO Técnico - Presença digital profissional</div>
       <h1>A gente bota <span class="gold">seu negocio na tela</span></h1>
       <p class="hero-sub">Desenvolvemos websites de alto desempenho e identidade visual para marcas que não se conformam com o ordinário.</p>
       <div class="hero-actions">
@@ -609,9 +611,9 @@ footer{
         
       </div>
       <div class="hero-stats">
-        <div class="stat"><span>80+</span><small>Projetos entregues</small></div>
-        <div class="stat"><span>98%</span><small>Clientes satisfeitos</small></div>
-        <div class="stat"><span>5★</span><small>Avaliação média</small></div>
+        <div class="stat"><span>100%</span><small>Sites Responsivos</small></div>
+        <div class="stat"><span>24h</span><small>Resposta comercial</small></div>
+        <div class="stat"><span>SEO</span><small>Estrutura otimizada</small></div>
       </div>
     </div>
     <div class="code-window reveal" style="transition-delay:.15s">
@@ -648,37 +650,37 @@ footer{
     </div>
     <div class="services-grid">
       <div class="service-card reveal">
-        <div class="service-icon">🎨</div>
+      <div class="service-icon">01</div>
         <h3>Design & UI/UX</h3>
         <p>Interfaces que encantam e convertem. Design orientado à experiência do usuário com identidade visual consistente e memorável.</p>
         <span class="service-tag">Figma · Branding</span>
       </div>
       <div class="service-card reveal" style="transition-delay:.1s">
-        <div class="service-icon">⚡</div>
+        <div class="service-icon">02</div>
         <h3>Desenvolvimento Web</h3>
         <p>Websites e landing pages com código limpo, carregamento ultrarrápido e performance que o Google ama.</p>
         <span class="service-tag">React · Next.js</span>
       </div>
       <div class="service-card reveal" style="transition-delay:.2s">
-        <div class="service-icon">🛒</div>
+        <div class="service-icon">03</div>
         <h3>E-commerce</h3>
         <p>Lojas virtuais otimizadas para vender mais — checkout simplificado, integração de pagamentos e gestão eficiente.</p>
         <span class="service-tag">Shopify · WooCommerce</span>
       </div>
       <div class="service-card reveal" style="transition-delay:.3s">
-        <div class="service-icon">📱</div>
+        <div class="service-icon">04</div>
         <h3>Aplicativos Mobile</h3>
         <p>Apps nativos e híbridos para iOS e Android. Da ideia ao lançamento nas stores com foco em usabilidade.</p>
         <span class="service-tag">React Native · Flutter</span>
       </div>
       <div class="service-card reveal" style="transition-delay:.4s">
-        <div class="service-icon">🔍</div>
+        <div class="service-icon">05</div>
         <h3>SEO & Performance</h3>
         <p>Otimização técnica e de conteúdo para ranquear nas primeiras posições e aumentar o tráfego orgânico.</p>
         <span class="service-tag">Core Web Vitals · SEO</span>
       </div>
       <div class="service-card reveal" style="transition-delay:.5s">
-        <div class="service-icon">🔧</div>
+        <div class="service-icon">06</div>
         <h3>Manutenção & Suporte</h3>
         <p>Seu site sempre no ar e atualizado. Suporte dedicado, backups automáticos e atualizações de segurança.</p>
         <span class="service-tag">24/7 Monitoramento</span>
@@ -743,19 +745,7 @@ footer{
           <p>Landing page para Advocacia</p>
         </div>
       </div>
-      <div class="portfolio-card reveal" style="transition-delay:.1s">
-        <a href="https://site-shine-rio.vercel.app/" target="_blank">
-          <div class="portfolio-img p2">
-            <span><img src='shinerio.png' alt='Shinerio'></span>
-            <div class="portfolio-overlay"></div>
-          </div>
-        </a>
-        <div class="portfolio-arrow"><a href="https://site-shine-rio.vercel.app/" target="_blank">↗</a></div>
-        <div class="portfolio-info">
-          <h3>Shine Rio Group</h3>
-          <p>Landing page para empresa de prestação de serviços</p>
-        </div>
-      </div>
+      
       <div class="portfolio-card reveal" style="transition-delay:.2s">
         <a href="https://site-rairorh.vercel.app/" target="_blank">
           <div class="portfolio-img p3">
@@ -792,28 +782,28 @@ footer{
         <h3>Informações de contato</h3>
         <p>Prefere falar diretamente? Escolha o canal mais conveniente para você.</p>
         <div class="contact-detail">
-          <div class="contact-icon">📧</div>
+          
           <div>
             <strong>E-mail</strong>
-            <span>contato@npcode.com.br</span>
+            <a href="mailto:contato@npcodesolutions.com.br" target="_blank">contato@npcodesolutions.com.br</a>
           </div>
         </div>
         <div class="contact-detail">
-          <div class="contact-icon">📱</div>
+          
           <div>
             <strong>WhatsApp</strong>
-            <span>+55 (21) 97484-5065</span>
+           <a href="https://wa.me/5521974845065" target="_blank"><span>+55 (21) 97484-5065</span></a> 
           </div>
         </div>
         <div class="contact-detail">
-          <div class="contact-icon">📍</div>
+          
           <div>
             <strong>Localização</strong>
             <span>Rio de Janeiro, RJ — Brasil</span>
           </div>
         </div>
         <div class="contact-detail">
-          <div class="contact-icon">🕐</div>
+          
           <div>
             <strong>Horário</strong>
             <span>Seg–Sex, 9h às 18h</span>
@@ -824,6 +814,7 @@ footer{
         <div id="formFields">
           <div class="form-row">
             <div class="field">
+              <form action="https://formsubmit.co/contato@npcodesolutions.com.br" method="POST" >
               <label for="nome">Nome</label>
               <input type="text" id="nome" placeholder="Seu nome" />
             </div>
@@ -857,6 +848,7 @@ footer{
         <div class="form-success" id="formSuccess">
           <div class="success-icon">✅</div>
           <h4>Mensagem enviada!</h4>
+        </form>
           <p>Recebemos seu contato e retornaremos em até 24 horas. Fique de olho no seu e-mail!</p>
         </div>
       </div>
