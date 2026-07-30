@@ -814,22 +814,22 @@ footer{
         <div id="formFields">
           <div class="form-row">
             <div class="field">
-              <form action="https://formsubmit.co/contato@npcodesolutions.com.br" method="POST" >
+              <form action="https://formsubmit.co/contato@npcodesolutions.com.br" method="POST">
               <label for="nome">Nome</label>
-              <input type="text" id="nome" placeholder="Seu nome" />
+              <input type="text" id="nome" name="name" placeholder="Seu nome" />
             </div>
             <div class="field">
               <label for="empresa">Empresa</label>
-              <input type="text" id="empresa" placeholder="Sua empresa" />
+              <input type="text" id="empresa" name="company" placeholder="Sua empresa" />
             </div>
           </div>
           <div class="field">
             <label for="email">E-mail</label>
-            <input type="email" id="email" placeholder="seu@email.com" />
+            <input type="email" id="email" name="email" placeholder="seu@email.com" />
           </div>
           <div class="field">
             <label for="servico">Serviço de interesse</label>
-            <select id="servico">
+            <select id="servico" name="service">
               <option value="" disabled selected>Selecione um serviço</option>
               <option>Design & UI/UX</option>
               <option>Desenvolvimento Web</option>
@@ -841,16 +841,16 @@ footer{
           </div>
           <div class="field">
             <label for="mensagem">Mensagem</label>
-            <textarea id="mensagem" placeholder="Conte um pouco sobre seu projeto…"></textarea>
+            <textarea id="mensagem" name="message" placeholder="Conte um pouco sobre seu projeto…"></textarea>
           </div>
-          <button class="btn-primary form-submit" onclick="submitForm()">Enviar mensagem →</button>
+          <button type="submit" class="btn-primary form-submit">Enviar mensagem →</button>
         </div>
         <div class="form-success" id="formSuccess">
           <div class="success-icon">✅</div>
           <h4>Mensagem enviada!</h4>
-        </form>
           <p>Recebemos seu contato e retornaremos em até 24 horas. Fique de olho no seu e-mail!</p>
         </div>
+       
       </div>
     </div>
   </div>
