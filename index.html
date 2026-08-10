@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>NP Code Solutions — Websites que Convertem!</title>
-<link rel="icon" type="image/png" href="logo.png">
+<link rel="icon" type="image/png" href="assets/logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
@@ -92,7 +92,20 @@ nav{
   color:var(--gold-hi) !important;
   transition:background var(--transition),color var(--transition);
 }
-.nav-cta:hover{background:var(--gold-lo);color:#0A1628 !important;-webkit-text-fill-color:#0A1628}
+.nav-cta:hover{
+  padding: .6rem 1.5rem;
+  background: var(--gold-grad);
+  border: none;
+  border-radius: 10px;
+  font-size: .875rem;
+  font-weight: 700;
+  letter-spacing: .03em;
+  color: #0A1628 !important;
+  -webkit-text-fill-color: #0A1628;
+  transition: opacity var(--transition), transform var(--transition), box-shadow var(--transition);
+  box-shadow: 0 6px 24px rgba(201,146,42,.3);
+}
+
 .nav-right{display:flex;align-items:center;gap:1rem}
 
 /* theme toggle */
@@ -376,6 +389,24 @@ section{padding:6rem 0}
 }
 .portfolio-card:hover .portfolio-arrow{opacity:1;transform:translate(2px,-2px)}
 
+.slider{
+    width:100%;
+    height:260px;
+    overflow:hidden;
+}
+.slides{
+    display:flex;
+    transition:transform .8s cubic-bezier(.22,1,.36,1);
+}
+.slides img{
+    width:100%;
+    min-width:100%;
+    height:260px;
+    object-fit:cover;
+    display:block;
+    user-select:none;
+}
+
 /* ── TESTIMONIALS ────────────────────────────────────────── */
 .testimonials{background:var(--navy-mid)}
 [data-theme="light"] .testimonials{background:var(--bg-card)}
@@ -442,6 +473,7 @@ section{padding:6rem 0}
 }
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
 .field{margin-bottom:1.2rem}
+[data-theme="light"] .field select option{background:var(--bg)}
 label{display:block;font-size:.75rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--fg-muted);margin-bottom:.5rem}
 input,textarea,select{
   width:100%;padding:.85rem 1rem;
@@ -486,6 +518,7 @@ footer{
 .footer-links a{font-size:.8rem;color:var(--fg-muted);transition:color var(--transition)}
 .footer-links a:hover{color:var(--gold-hi)}
 .footer-copy{font-size:.75rem;color:var(--fg-muted)}
+[data-theme="light"] .footer-logo img{content:url('assets/logodark.png')}
 
 /* ── SCROLL REVEAL ───────────────────────────────────────── */
 .reveal{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease}
@@ -569,7 +602,7 @@ footer{
 <nav>
   <div class="container nav-inner">
     <a href="#" class="nav-logo">
-      <img id="logo" src="logo branca.png" alt="NP Code Solutions" />
+      <img id="logo" src="assets/logo branca.png" alt="NP Code Solutions" />
     </a>
     <ul class="nav-links">
       <li><a href="#servicos">Serviços</a></li>
@@ -593,7 +626,7 @@ footer{
 <div class="mobile-menu" id="mobileMenu">
   <a href="#servicos" class="mob-link">Serviços</a>
   <a href="#processo" class="mob-link">Processo</a>
-  <li><a href="#portfolio">Portfólio</a></li>
+  <a href="#portfolio" class="mob-link">Portfólio</a>
   <a href="#contato" class="mob-link" style="color:var(--gold-hi)">Contato</a>
 </div>
 
@@ -735,7 +768,14 @@ footer{
       <div class="portfolio-card reveal">
         <a href="https://pinheiromichoadv.vercel.app/" target="_blank">
           <div class="portfolio-img p1">
-            <span><img src='pinheiromicho.png' alt='Pinheiro Micho Advogados'></span>
+            <span>
+              <div class="slider">
+                  <div class="slides">
+                    <img src='assets/pinheiromicho.png' alt='Pinheiro Micho Advogados'>
+                    <img src='assets/pinheiromicho2.png' alt='Pinheiro Micho Advogados'>
+                  </div>
+              </div>
+            </span>
             <div class="portfolio-overlay"></div>
           </div>
         </a>
@@ -749,7 +789,14 @@ footer{
       <div class="portfolio-card reveal" style="transition-delay:.2s">
         <a href="https://site-rairorh.vercel.app/" target="_blank">
           <div class="portfolio-img p3">
-            <span><img src='railorh.png' alt='Rai loRH'></span>
+            <span>
+              <div class="slider">
+                  <div class="slides">
+                    <img src='assets/railorh.png' alt='Rai loRH'>
+                    <img src='assets/railorh2.jpeg' alt='Rai loRH'>
+                  </div>
+              </div>
+            </span>
             <div class="portfolio-overlay"></div>
           </div>
         </a>
@@ -860,7 +907,7 @@ footer{
 <footer>
   <div class="container footer-inner">
     <a href="#" class="footer-logo">
-      <img id="logo" src="logo branca.png" alt="NP Code Solutions" />
+      <img id="logo" src="assets/logo branca.png" alt="NP Code Solutions" />
     </a>
     <ul class="footer-links">
       <li><a href="#servicos">Serviços</a></li>
@@ -881,7 +928,7 @@ footer{
     target="_blank"
     class="whatsapp-button"
   >
-    <img src="whatsapp.png" alt="WhatsApp">
+    <img src="assets/whatsapp.png" alt="WhatsApp">
   </a>
 </div>
 <script>
@@ -903,7 +950,7 @@ themeBtn.addEventListener('click', () => {
     iconSun.style.display = dark ? 'block' : 'none';
     iconMoon.style.display = dark ? 'none' : 'block';
 
-    logo.src = dark ? 'logo branca.png' : 'logodark.png';
+    logo.src = dark ? 'assets/logo branca.png' : 'assets/logodark.png';
 });
 
 /* ── HAMBURGER ── */
@@ -953,6 +1000,20 @@ window.addEventListener('scroll', () => {
     }
   });
 }, { passive: true });
+
+document.querySelectorAll(".slider").forEach((slider) => {
+    const slides = slider.querySelector(".slides");
+    const images = slider.querySelectorAll("img");
+    let index = 0;
+    setInterval(() => {
+        index++;
+        if(index >= images.length){
+            index = 0;
+        }
+        slides.style.transform = `translateX(-${index * 100}%)`;
+    }, 3500);
+});
+
 </script>
 </body>
 </html>
