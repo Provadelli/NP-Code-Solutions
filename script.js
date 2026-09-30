@@ -903,13 +903,16 @@ if (!reduceMotion) {
   apply();
 })();
 
-/* ── CONTACT FORM: validation, consent and async submit ── */
+/* ── CONTACT FORM: validation, consent and async submit (Web3Forms) ── */
 (() => {
   const form = document.getElementById('contactForm');
   if (!form) return;
 
-  const ENDPOINT = 'https://formsubmit.co/ajax/contato@npcodesolutions.com.br';
+  const ENDPOINT = 'https://api.web3forms.com/submit';
   const POLICY_VERSION = '30/09/2026';
+  const TIMEOUT_MS = 15000;
+  const WHATSAPP = '5521974845065';
+  const MAILTO = 'contato@npcodesolutions.com.br';
   const status = document.getElementById('formStatus');
   const submit = document.getElementById('formSubmit');
   const submitLabel = submit.querySelector('.submit-label');
@@ -975,6 +978,60 @@ if (!reduceMotion) {
     submitLabel.textContent = busy ? 'Enviando…' : 'Enviar mensagem';
   }
 
+  /* Without JavaScript the form still posts to Web3Forms, which sends the visitor
+     back here via "redirect" (free plan: must be this same domain). */
+  const SENT_FLAG = 'enviado';
+  const redirect = document.getElementById('formRedirect');
+  if (redirect) {
+    if (/^https?:$/.test(location.protocol)) {
+      redirect.value = `${location.origin}${location.pathname}?${SENT_FLAG}=1#contato`;
+    } else {
+      redirect.remove(); // only http(s) URLs are valid redirects (e.g. not file://)
+    }
+  }
+
+  const params = new URLSearchParams(location.search);
+  if (params.has(SENT_FLAG)) {
+    params.delete(SENT_FLAG);
+    const qs = params.toString();
+    history.replaceState(null, '', `${location.pathname}${qs ? `?${qs}` : ''}#contato`);
+    setStatus('ok', '<strong>Mensagem enviada!</strong> Obrigado pelo contato. Vamos responder em até 24 horas úteis no e-mail informado.');
+    requestAnimationFrame(() => {
+      document.getElementById('contato').scrollIntoView({ behavior: 'instant', block: 'start' });
+      status.focus({ preventScroll: true });
+    });
+  }
+
+  const accessKey = document.getElementById('formAccessKey');
+  const keyMissing = () => !accessKey || !accessKey.value || accessKey.value === 'SUA_ACCESS_KEY_AQUI';
+  if (keyMissing()) {
+    console.error('[Formulário] Configure a access key do Web3Forms no campo #formAccessKey do index.html (gere em https://web3forms.com).');
+  }
+
+  /* If sending fails, the visitor can send the very same message through
+     WhatsApp or their own e-mail app — nothing typed is lost. */
+  function showFallback(data) {
+    const lines = [
+      `Olá! Sou ${String(data.name).trim()}${data.company ? `, da ${String(data.company).trim()}` : ''}.`,
+      data.service ? `Serviço de interesse: ${data.service}` : '',
+      '',
+      String(data.message).trim(),
+      '',
+      `Meu e-mail: ${String(data.email).trim()}`,
+    ].filter((l, i, arr) => l || (i > 0 && arr[i - 1]));
+    const text = lines.join('\n');
+    const wa = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(text)}`;
+    const mail = `mailto:${MAILTO}?subject=${encodeURIComponent('Contato pelo site NP Code')}&body=${encodeURIComponent(text)}`;
+    setStatus('err', `<strong>Não conseguimos enviar sua mensagem agora.</strong> Seus dados continuam no formulário: tente de novo em instantes ou envie a mesma mensagem, já preenchida, por
+      <a href="${wa}" target="_blank" rel="noopener">WhatsApp<span class="sr-only"> (abre em nova aba)</span></a> ou
+      <a href="${mail}">e-mail</a>.`);
+    status.focus();
+  }
+
+  // Coming back with the browser Back button restores the page from cache,
+  // possibly mid-submit; never leave the button stuck in "Enviando…".
+  window.addEventListener('pageshow', (e) => { if (e.persisted) setBusy(false); });
+
   const escapeHtml = (str) => str.replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
   form.addEventListener('submit', async (e) => {
@@ -989,33 +1046,42 @@ if (!reduceMotion) {
       return;
     }
 
-    const data = Object.fromEntries(new FormData(form));
+    const body = new FormData(form);
+    const data = Object.fromEntries(body);
     const firstName = escapeHtml(String(data.name).trim().split(/\s+/)[0]);
     const email = escapeHtml(String(data.email).trim());
 
-    // Bots fill the hidden field; pretend success and drop the message.
-    if (data._honey) {
+    // Bots tick the hidden checkbox; pretend success and drop the message.
+    if (data.botcheck) {
       setStatus('ok', 'Mensagem enviada! Obrigado pelo contato.');
       form.reset();
       return;
     }
-    delete data._honey;
-    data.consentimento_lgpd = `Sim. Aceite da Política de Privacidade e dos Termos de Uso (versão ${POLICY_VERSION}) em ${new Date().toLocaleString('pt-BR')}`;
+    if (keyMissing()) {
+      showFallback(data);
+      return;
+    }
+
+    body.delete('botcheck');
+    body.delete('redirect'); // JSON reply instead of a redirect
+    body.set('consentimento_lgpd', `Sim. Aceite da Política de Privacidade e dos Termos de Uso (versão ${POLICY_VERSION}) em ${new Date().toLocaleString('pt-BR')}`);
 
     setBusy(true);
     setStatus('', '');
     const ctrl = new AbortController();
-    const timer = setTimeout(() => ctrl.abort(), 15000);
+    const timer = setTimeout(() => ctrl.abort(), TIMEOUT_MS);
+    const slowHint = setTimeout(() => setStatus('', 'Enviando sua mensagem…'), 3000);
 
     try {
+      // FormData (multipart) with only an Accept header is a "simple" CORS request: no preflight.
       const res = await fetch(ENDPOINT, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify(data),
+        headers: { Accept: 'application/json' },
+        body,
         signal: ctrl.signal,
       });
       const json = await res.json().catch(() => ({}));
-      if (!res.ok || String(json.success) !== 'true') throw new Error(json.message || `HTTP ${res.status}`);
+      if (!res.ok || json.success !== true) throw new Error(json.message || `HTTP ${res.status}`);
 
       setStatus('ok', `<strong>Mensagem enviada!</strong> Obrigado, ${firstName}. Vamos responder em até 24 horas úteis no e-mail <strong>${email}</strong>.`);
       form.reset();
@@ -1023,10 +1089,11 @@ if (!reduceMotion) {
       fields.forEach(el => { el.removeAttribute('aria-invalid'); el.classList.remove('is-valid'); });
       updateCounter();
     } catch (err) {
-      setStatus('err', 'Não conseguimos enviar sua mensagem agora. Seus dados continuam no formulário: tente novamente em instantes ou fale com a gente pelo <a href="https://wa.me/5521974845065" target="_blank" rel="noopener">WhatsApp<span class="sr-only"> (abre em nova aba)</span></a> ou pelo e-mail <a href="mailto:contato@npcodesolutions.com.br">contato@npcodesolutions.com.br</a>.');
-      status.focus();
+      console.error('[Formulário] Falha no envio:', err.message);
+      showFallback(data);
     } finally {
       clearTimeout(timer);
+      clearTimeout(slowHint);
       setBusy(false);
     }
   });

@@ -457,16 +457,21 @@
               </div>
             </div>
           </div>
-          <form class="contact-form spot reveal" style="transition-delay:.15s" id="contactForm" action="https://formsubmit.co/contato@npcodesolutions.com.br" method="POST" novalidate aria-labelledby="formTitle" aria-describedby="formRequired">
+          <form class="contact-form spot reveal" style="transition-delay:.15s" id="contactForm" action="https://api.web3forms.com/submit" method="POST" novalidate aria-labelledby="formTitle" aria-describedby="formRequired">
             <h3 class="form-title" id="formTitle">Conte sobre seu projeto</h3>
             <p class="form-required" id="formRequired">Campos marcados com <span aria-hidden="true">*</span><span class="sr-only">asterisco</span> são obrigatórios.</p>
 
-            <input type="hidden" name="_subject" value="Novo contato pelo site NP Code" />
-            <input type="hidden" name="_template" value="table" />
-            <!-- Honeypot anti-spam: invisível para pessoas, preenchido por robôs -->
+            <!-- Web3Forms (https://web3forms.com): a chave é pública por design e só permite
+                 ENVIAR mensagens para o e-mail cadastrado nela; não dá acesso a nada. -->
+            <input type="hidden" name="access_key" id="formAccessKey" value="67ca96e8-4a08-41d5-9a26-b0b27dccd49b" />
+            <input type="hidden" name="subject" value="Novo contato pelo site NP Code" />
+            <input type="hidden" name="from_name" value="Site NP Code Solutions" />
+            <!-- Sem JavaScript, o envio tradicional volta direto para o site -->
+            <input type="hidden" name="redirect" id="formRedirect" value="" />
+            <!-- Honeypot anti-spam: invisível para pessoas, marcado só por robôs -->
             <div class="hp" aria-hidden="true">
-              <label for="hpField">Não preencha este campo</label>
-              <input type="text" id="hpField" name="_honey" tabindex="-1" autocomplete="off" />
+              <label for="hpField">Não marque este campo</label>
+              <input type="checkbox" id="hpField" name="botcheck" tabindex="-1" autocomplete="off" />
             </div>
 
             <div class="form-row">
@@ -719,7 +724,7 @@
       <p>O tratamento se baseia no seu <strong>consentimento</strong> (art. 7º, I, da LGPD), manifestado ao marcar a caixa de concordância do formulário, e na execução de <strong>procedimentos preliminares relacionados a contrato</strong> a seu pedido (art. 7º, V), quando você solicita um orçamento.</p>
 
       <h3>5. Com quem compartilhamos</h3>
-      <p>Não vendemos nem cedemos seus dados. Para que a mensagem chegue até nós, o formulário utiliza o serviço <strong>FormSubmit</strong> (formsubmit.co), que atua apenas como operador na entrega do e-mail, e nosso provedor de e-mail. Esses serviços podem armazenar dados em servidores fora do Brasil; nesses casos, a transferência internacional ocorre para cumprir a finalidade que você solicitou (art. 33 da LGPD). Também poderemos compartilhar dados quando exigido por lei ou por ordem de autoridade competente.</p>
+      <p>Não vendemos nem cedemos seus dados. Para que a mensagem chegue até nós, o formulário utiliza o serviço <strong>Web3Forms</strong> (web3forms.com), que atua apenas como operador na entrega do e-mail, e nosso provedor de e-mail. Esses serviços podem armazenar dados em servidores fora do Brasil; nesses casos, a transferência internacional ocorre para cumprir a finalidade que você solicitou (art. 33 da LGPD). Também poderemos compartilhar dados quando exigido por lei ou por ordem de autoridade competente.</p>
 
       <h3>6. Por quanto tempo guardamos</h3>
       <p>Mantemos os dados do contato por até <strong>12 meses</strong> após a última interação. Se o contato resultar em contrato, os dados passam a seguir os prazos necessários ao cumprimento de obrigações legais e contratuais. Encerrado o prazo, os dados são excluídos ou anonimizados.</p>
