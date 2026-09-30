@@ -4,17 +4,18 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>NP Code Solutions | Websites que Convertem!</title>
+  <meta name="description" content="NP Code Solutions: sites institucionais, landing pages, e-commerce e sistemas web sob medida, com design premium, SEO técnico e performance de verdade." />
   <link rel="icon" type="image/png" href="assets/logo.png">
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <!-- NAV -->
-  <nav>
+  <nav id="siteNav">
     <div class="container nav-inner">
-      <a href="#" class="nav-logo">
+      <a href="#inicio" class="nav-logo">
         <img src="assets/logo branca.png" alt="NP Code Solutions" />
       </a>
       <ul class="nav-links">
@@ -22,7 +23,12 @@
         <li><a href="#servicos">Serviços</a></li>
         <li><a href="#processo">Processo</a></li>
         <li><a href="#portfolio">Portfólio</a></li>
-        <li><a href="#contato" class="nav-cta">Fale Conosco →</a></li>
+        <li>
+          <a href="#contato" class="nav-cta">
+            Fale conosco
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </li>
       </ul>
       <div class="nav-right">
         <button class="hamburger" id="hamburger" aria-label="Menu">
@@ -43,255 +49,383 @@
 
   <!-- HERO -->
   <section class="hero" id="inicio">
-    <div class="hero-bg"></div>
-    <canvas id="heroCanvas" class="hero-canvas" aria-hidden="true"></canvas>
-    <div class="container hero-content">
-      <div class="hero-text reveal">
-        <div class="hero-eyebrow">Sites profissionais • SEO técnico • Presença digital de alto padrão</div>
-        <h1>A gente bota <span class="gold">seu negócio na tela</span></h1>
-        <p class="hero-sub">Desenvolvemos websites de alto desempenho e identidade visual para marcas que não se conformam com o ordinário.</p>
-        <div class="hero-actions">
-          <a href="#contato" class="btn-primary">Iniciar projeto</a>
+    <div class="hero-bg" id="heroBg" aria-hidden="true">
+      <span class="blob blob-1"></span>
+      <span class="blob blob-2"></span>
+      <span class="blob blob-3"></span>
+      <span class="hero-grid"></span>
+      <span class="hero-noise"></span>
+    </div>
+
+    <div class="container hero-content" id="heroContent">
+      <div class="hero-text">
+        <div class="hero-eyebrow h-anim">Estúdio digital · Rio de Janeiro</div>
+        <h1>
+          <span class="line"><span>A gente bota</span></span>
+          <span class="line"><span>seu negócio</span></span>
+          <span class="line"><span><em class="gold">na tela.</em></span></span>
+        </h1>
+        <div class="hero-scramble h-anim" aria-live="polite">
+          <span class="scr-prefix">Criamos</span>
+          <span class="scramble" id="scramble">Sites institucionais</span><span class="scr-caret" aria-hidden="true"></span>
         </div>
-        <div class="hero-stats">
-          <div class="stat"><span>100%</span><small>Sites Responsivos</small></div>
+        <p class="hero-sub h-anim">Websites de alto desempenho e identidade visual para marcas que não se conformam com o ordinário.</p>
+        <div class="hero-actions h-anim">
+          <a href="#contato" class="btn-primary magnetic">
+            Iniciar projeto
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+          <a href="#portfolio" class="btn-ghost magnetic">Ver projetos</a>
+        </div>
+        <div class="hero-stats h-anim">
+          <div class="stat"><span>100%</span><small>Sites responsivos</small></div>
           <div class="stat"><span>24h</span><small>Resposta comercial</small></div>
           <div class="stat"><span>SEO</span><small>Estrutura otimizada</small></div>
         </div>
       </div>
-    </div>
-  </section>
 
-  <!-- SOBRE -->
-  <section class="section-light" id="sobre">
-    <canvas id="aboutCanvas" class="about-canvas" aria-hidden="true"></canvas>
-    <div class="container">
-      <div class="reveal text-center">
-        <span class="section-label">Quem somos</span>
-        <h2 class="section-title">Tecnologia e design a serviço do <span class="gold">seu negócio</span></h2>
-        <div class="divider center"></div>
-        <p class="section-sub">A NP Code Solutions é uma equipe especializada em criar experiências digitais que unem design, tecnologia e performance. Desenvolvemos sites institucionais, landing pages, portfólios e lojas virtuais para empresas que querem fortalecer sua presença online e converter mais visitantes em clientes.</p>
-      </div>
-      <div class="about-stack reveal" style="transition-delay:.1s">
-        <span class="about-stack-label">Com o que trabalhamos</span>
-        <div class="about-marquee">
-          <div class="about-tags-track">
-            <span class="service-tag">HTML5</span>
-            <span class="service-tag">CSS3</span>
-            <span class="service-tag">JavaScript</span>
-            <span class="service-tag">React · Next.js</span>
-            <span class="service-tag">Figma</span>
-            <span class="service-tag">SEO Técnico</span>
-            <span class="service-tag">Shopify · WooCommerce</span>
-            <span class="service-tag">React Native · Flutter</span>
-            <span class="service-tag" aria-hidden="true">HTML5</span>
-            <span class="service-tag" aria-hidden="true">CSS3</span>
-            <span class="service-tag" aria-hidden="true">JavaScript</span>
-            <span class="service-tag" aria-hidden="true">React · Next.js</span>
-            <span class="service-tag" aria-hidden="true">Figma</span>
-            <span class="service-tag" aria-hidden="true">SEO Técnico</span>
-            <span class="service-tag" aria-hidden="true">Shopify · WooCommerce</span>
-            <span class="service-tag" aria-hidden="true">React Native · Flutter</span>
+      <!-- Código vira site -->
+      <div class="hero-visual h-anim" id="heroVisual" aria-hidden="true">
+        <div class="hv-glow"></div>
+        <div class="hv-stage" id="hvStage">
+          <div class="hv-editor">
+            <div class="hv-bar">
+              <span class="hv-dots"><i></i><i></i><i></i></span>
+              <span class="hv-tab">seu-negocio.html</span>
+              <span class="hv-live"><i></i>ao vivo</span>
+            </div>
+            <pre class="hv-code"><code id="hvCode"></code></pre>
           </div>
+
+          <div class="hv-browser">
+            <div class="hv-bbar">
+              <span class="hv-dots"><i></i><i></i><i></i></span>
+              <span class="hv-url">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+                seunegocio.com.br
+              </span>
+            </div>
+            <div class="hv-page">
+              <div class="hb hb-nav" data-step="0"><span class="hb-logo">Sua marca</span><span class="hb-links"><i></i><i></i><i></i></span></div>
+              <div class="hb hb-title" data-step="1">Sua marca, no topo.</div>
+              <div class="hb hb-text" data-step="2"><i></i><i></i></div>
+              <div class="hb hb-btn" data-step="3">Fale conosco</div>
+              <div class="hb hb-cards" data-step="4"><i></i><i></i><i></i></div>
+            </div>
+          </div>
+
+          <div class="hv-chip chip-1"><b>⚡</b> Lighthouse 100</div>
+          <div class="hv-chip chip-2"><b>✓</b> SEO técnico</div>
+          <div class="hv-chip chip-3"><b>✓</b> Deploy no ar</div>
         </div>
       </div>
     </div>
+
+    <a href="#sobre" class="scroll-hint" aria-label="Rolar para a próxima seção">
+      <span class="scroll-line"></span>
+      Role para explorar
+    </a>
   </section>
 
-  <!-- SERVICES -->
-  <section id="servicos">
-    <div class="container">
-      <div class="reveal">
-        <span class="section-label">O que fazemos</span>
-        <h2 class="section-title">Serviços que <span class="gold">elevam sua marca</span></h2>
-        <div class="divider"></div>
-        <p class="section-sub">De landing pages de alta conversão a sistemas web completos: entregamos soluções digitais que fazem negócios crescerem.</p>
-      </div>
-    </div>
-    <div class="coverflow reveal" role="region" aria-roledescription="carousel" aria-label="Serviços">
-        <div class="coverflow-frame" id="coverflowFrame" tabindex="0">
-          <div class="coverflow-track" id="coverflowTrack">
-            <div class="coverflow-card service-card" role="group" aria-roledescription="slide" aria-label="1 de 6">
-              <div class="service-icon">01</div>
-              <h3>Design & UI/UX</h3>
-              <p>Interfaces que encantam e convertem. Design orientado à experiência do usuário com identidade visual consistente e memorável.</p>
-              <span class="service-tag">Figma · Branding</span>
-            </div>
-            <div class="coverflow-card service-card" role="group" aria-roledescription="slide" aria-label="2 de 6">
-              <div class="service-icon">02</div>
-              <h3>Desenvolvimento Web</h3>
-              <p>Websites e landing pages com código limpo, carregamento ultrarrápido e performance que o Google ama.</p>
+  <div class="page-stack">
+    <!-- SOBRE -->
+    <section class="section-light" id="sobre">
+      <canvas id="aboutCanvas" class="about-canvas" aria-hidden="true"></canvas>
+      <div class="container">
+        <div class="reveal text-center">
+          <span class="section-label"><b>01</b> Quem somos</span>
+          <h2 class="section-title">Tecnologia e design a serviço do <span class="gold">seu negócio</span></h2>
+          <div class="divider center"></div>
+          <p class="section-sub">A NP Code Solutions é uma equipe especializada em criar experiências digitais que unem design, tecnologia e performance. Desenvolvemos sites institucionais, landing pages, portfólios e lojas virtuais para empresas que querem fortalecer sua presença online e converter mais visitantes em clientes.</p>
+        </div>
+        <div class="about-stack reveal" style="transition-delay:.1s">
+          <span class="about-stack-label">Com o que trabalhamos</span>
+          <div class="about-marquee">
+            <div class="about-tags-track">
+              <span class="service-tag">HTML5</span>
+              <span class="service-tag">CSS3</span>
+              <span class="service-tag">JavaScript</span>
               <span class="service-tag">React · Next.js</span>
-            </div>
-            <div class="coverflow-card service-card" role="group" aria-roledescription="slide" aria-label="3 de 6">
-              <div class="service-icon">03</div>
-              <h3>E-commerce</h3>
-              <p>Lojas virtuais otimizadas para vender mais, com checkout simplificado, integração de pagamentos e gestão eficiente.</p>
+              <span class="service-tag">Figma</span>
+              <span class="service-tag">SEO Técnico</span>
               <span class="service-tag">Shopify · WooCommerce</span>
-            </div>
-            <div class="coverflow-card service-card" role="group" aria-roledescription="slide" aria-label="4 de 6">
-              <div class="service-icon">04</div>
-              <h3>Aplicativos Mobile</h3>
-              <p>Apps nativos e híbridos para iOS e Android. Da ideia ao lançamento nas stores com foco em usabilidade.</p>
               <span class="service-tag">React Native · Flutter</span>
-            </div>
-            <div class="coverflow-card service-card" role="group" aria-roledescription="slide" aria-label="5 de 6">
-              <div class="service-icon">05</div>
-              <h3>SEO & Performance</h3>
-              <p>Otimização técnica e de conteúdo para ranquear nas primeiras posições e aumentar o tráfego orgânico.</p>
-              <span class="service-tag">Core Web Vitals · SEO</span>
-            </div>
-            <div class="coverflow-card service-card" role="group" aria-roledescription="slide" aria-label="6 de 6">
-              <div class="service-icon">06</div>
-              <h3>Manutenção & Suporte</h3>
-              <p>Seu site sempre no ar e atualizado. Suporte dedicado, backups automáticos e atualizações de segurança.</p>
-              <span class="service-tag">24/7 Monitoramento</span>
+              <span class="service-tag" aria-hidden="true">HTML5</span>
+              <span class="service-tag" aria-hidden="true">CSS3</span>
+              <span class="service-tag" aria-hidden="true">JavaScript</span>
+              <span class="service-tag" aria-hidden="true">React · Next.js</span>
+              <span class="service-tag" aria-hidden="true">Figma</span>
+              <span class="service-tag" aria-hidden="true">SEO Técnico</span>
+              <span class="service-tag" aria-hidden="true">Shopify · WooCommerce</span>
+              <span class="service-tag" aria-hidden="true">React Native · Flutter</span>
             </div>
           </div>
         </div>
-        <button type="button" class="coverflow-nav coverflow-prev" aria-label="Serviço anterior">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
-        </button>
-        <button type="button" class="coverflow-nav coverflow-next" aria-label="Próximo serviço">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-        </button>
       </div>
-  </section>
+    </section>
 
-  <!-- PROCESS -->
-  <section class="process section-light" id="processo">
-    <div class="container">
-      <div class="reveal text-center">
-        <span class="section-label">Como trabalhamos</span>
-        <h2 class="section-title">Do briefing ao <span class="gold">lançamento</span></h2>
-        <div class="divider center"></div>
-        <p class="section-sub">Um processo transparente e colaborativo para entregar o site ideal no prazo combinado.</p>
-      </div>
-      <div class="process-steps">
-        <div class="step reveal">
-          <div class="step-num">01</div>
-          <h4>Descoberta</h4>
-          <p>Entendemos seu negócio, público-alvo e objetivos para definir a estratégia ideal.</p>
+    <!-- SERVICES -->
+    <section id="servicos">
+      <div class="container">
+        <div class="reveal svc-head">
+          <div>
+            <span class="section-label"><b>02</b> O que fazemos</span>
+            <h2 class="section-title">Serviços que <span class="gold">elevam sua marca</span></h2>
+            <div class="divider"></div>
+          </div>
+          <p class="section-sub">De landing pages de alta conversão a sistemas web completos: entregamos soluções digitais que fazem negócios crescerem.</p>
         </div>
-        <div class="step reveal" style="transition-delay:.1s">
-          <div class="step-num">02</div>
-          <h4>Design</h4>
-          <p>Criamos o layout no Figma e alinhamos cada detalhe antes de escrever uma linha de código.</p>
-        </div>
-        <div class="step reveal" style="transition-delay:.2s">
-          <div class="step-num">03</div>
-          <h4>Desenvolvimento</h4>
-          <p>Codificamos com as melhores práticas: performance, acessibilidade e responsividade.</p>
-        </div>
-        <div class="step reveal" style="transition-delay:.3s">
-          <div class="step-num">04</div>
-          <h4>Lançamento</h4>
-          <p>Deploy, testes finais e entrega. Seu site no ar e pronto para converter.</p>
-        </div>
-      </div>
-    </div>
-  </section>
 
-  <!-- PORTFOLIO -->
-  <section id="portfolio">
-    <div class="container">
-      <div class="reveal">
-        <span class="section-label">Projetos recentes</span>
-        <h2 class="section-title">Trabalhos que nos <span class="gold">orgulham</span></h2>
-        <div class="divider"></div>
-      </div>
-      <div class="portfolio-grid">
-        <div class="portfolio-card reveal">
-          <a href="https://pinheiromichoadv.vercel.app/" target="_blank">
-            <div class="portfolio-img p1">
-              <span>
-                <div class="slider">
-                  <div class="slides">
-                    <img src='assets/pinheiromicho.png' alt='Pinheiro Micho Advogados'>
-                    <img src='assets/pinheiromicho2.png' alt='Pinheiro Micho Advogados'>
+        <div class="svc-carousel" id="svcCarousel" role="region" aria-roledescription="carousel" aria-label="Serviços" tabindex="0">
+          <div class="svc-viewport">
+            <div class="svc-track" id="svcTrack">
+              <div class="svc-item" role="group" aria-roledescription="slide" aria-label="1 de 6">
+                <article class="svc-card spot g1">
+                  <div class="svc-top">
+                    <span class="svc-num">( 001 )</span>
+                    <svg class="svc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></svg>
                   </div>
-                </div>
-              </span>
-              <div class="portfolio-overlay"></div>
+                  <div class="svc-body">
+                    <h3>Design & UI/UX</h3>
+                    <p>Interfaces que encantam e convertem. Design orientado à experiência do usuário com identidade visual consistente e memorável.</p>
+                    <span class="service-tag">Figma · Branding</span>
+                  </div>
+                </article>
+              </div>
+              <div class="svc-item" role="group" aria-roledescription="slide" aria-label="2 de 6">
+                <article class="svc-card spot g2">
+                  <div class="svc-top">
+                    <span class="svc-num">( 002 )</span>
+                    <svg class="svc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                  </div>
+                  <div class="svc-body">
+                    <h3>Desenvolvimento Web</h3>
+                    <p>Websites e landing pages com código limpo, carregamento ultrarrápido e performance que o Google ama.</p>
+                    <span class="service-tag">React · Next.js</span>
+                  </div>
+                </article>
+              </div>
+              <div class="svc-item" role="group" aria-roledescription="slide" aria-label="3 de 6">
+                <article class="svc-card spot g3">
+                  <div class="svc-top">
+                    <span class="svc-num">( 003 )</span>
+                    <svg class="svc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                  </div>
+                  <div class="svc-body">
+                    <h3>E-commerce</h3>
+                    <p>Lojas virtuais otimizadas para vender mais, com checkout simplificado, integração de pagamentos e gestão eficiente.</p>
+                    <span class="service-tag">Shopify · WooCommerce</span>
+                  </div>
+                </article>
+              </div>
+              <div class="svc-item" role="group" aria-roledescription="slide" aria-label="4 de 6">
+                <article class="svc-card spot g4">
+                  <div class="svc-top">
+                    <span class="svc-num">( 004 )</span>
+                    <svg class="svc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+                  </div>
+                  <div class="svc-body">
+                    <h3>Aplicativos Mobile</h3>
+                    <p>Apps nativos e híbridos para iOS e Android. Da ideia ao lançamento nas stores com foco em usabilidade.</p>
+                    <span class="service-tag">React Native · Flutter</span>
+                  </div>
+                </article>
+              </div>
+              <div class="svc-item" role="group" aria-roledescription="slide" aria-label="5 de 6">
+                <article class="svc-card spot g5">
+                  <div class="svc-top">
+                    <span class="svc-num">( 005 )</span>
+                    <svg class="svc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+                  </div>
+                  <div class="svc-body">
+                    <h3>SEO & Performance</h3>
+                    <p>Otimização técnica e de conteúdo para ranquear nas primeiras posições e aumentar o tráfego orgânico.</p>
+                    <span class="service-tag">Core Web Vitals · SEO</span>
+                  </div>
+                </article>
+              </div>
+              <div class="svc-item" role="group" aria-roledescription="slide" aria-label="6 de 6">
+                <article class="svc-card spot g6">
+                  <div class="svc-top">
+                    <span class="svc-num">( 006 )</span>
+                    <svg class="svc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+                  </div>
+                  <div class="svc-body">
+                    <h3>Manutenção & Suporte</h3>
+                    <p>Seu site sempre no ar e atualizado. Suporte dedicado, backups automáticos e atualizações de segurança.</p>
+                    <span class="service-tag">24/7 Monitoramento</span>
+                  </div>
+                </article>
+              </div>
+            </div>
+          </div>
+          <button type="button" class="svc-nav svc-prev" aria-label="Serviço anterior">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+          </button>
+          <button type="button" class="svc-nav svc-next" aria-label="Próximo serviço">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROCESS -->
+    <section class="process section-light" id="processo">
+      <div class="container">
+        <div class="reveal text-center">
+          <span class="section-label"><b>03</b> Como trabalhamos</span>
+          <h2 class="section-title">Do briefing ao <span class="gold">lançamento</span></h2>
+          <div class="divider center"></div>
+          <p class="section-sub">Um processo transparente e colaborativo para entregar o site ideal no prazo combinado.</p>
+        </div>
+        <div class="process-steps">
+          <div class="step reveal">
+            <div class="step-num">01</div>
+            <h4>Descoberta</h4>
+            <p>Entendemos seu negócio, público-alvo e objetivos para definir a estratégia ideal.</p>
+          </div>
+          <div class="step reveal" style="transition-delay:.1s">
+            <div class="step-num">02</div>
+            <h4>Design</h4>
+            <p>Criamos o layout no Figma e alinhamos cada detalhe antes de escrever uma linha de código.</p>
+          </div>
+          <div class="step reveal" style="transition-delay:.2s">
+            <div class="step-num">03</div>
+            <h4>Desenvolvimento</h4>
+            <p>Codificamos com as melhores práticas: performance, acessibilidade e responsividade.</p>
+          </div>
+          <div class="step reveal" style="transition-delay:.3s">
+            <div class="step-num">04</div>
+            <h4>Lançamento</h4>
+            <p>Deploy, testes finais e entrega. Seu site no ar e pronto para converter.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PORTFOLIO -->
+    <section id="portfolio">
+      <div class="container">
+        <div class="reveal work-head">
+          <div>
+            <span class="section-label"><b>04</b> Projetos recentes</span>
+            <h2 class="section-title">Trabalhos que nos <span class="gold">orgulham</span></h2>
+            <div class="divider"></div>
+          </div>
+          <p class="work-hint">Passe o mouse para pausar · arraste para navegar</p>
+        </div>
+      </div>
+
+      <div class="work-marquee" id="workMarquee">
+        <div class="work-track" id="workTrack">
+          <a class="work-card" href="https://pinheiromichoadv.vercel.app/" target="_blank" rel="noopener">
+            <div class="work-img">
+              <img src="assets/pinheiromicho.png" alt="Pinheiro Micho Advogados" draggable="false" loading="lazy">
+              <img src="assets/pinheiromicho2.png" alt="" draggable="false" loading="lazy">
+            </div>
+            <div class="work-meta">
+              <div>
+                <span class="work-idx">01</span>
+                <h3>Pinheiro Micho Advogados</h3>
+                <p>Landing page para advocacia</p>
+              </div>
+              <span class="work-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></span>
             </div>
           </a>
-          <div class="portfolio-arrow"><a href="https://pinheiromichoadv.vercel.app/" target="_blank">↗</a></div>
-          <div class="portfolio-info">
-            <h3>Pinheiro Micho Advogados</h3>
-            <p>Landing page para Advocacia</p>
-          </div>
-        </div>
-        <div class="portfolio-card reveal" style="transition-delay:.2s">
-          <a href="https://site-rairorh.vercel.app/" target="_blank">
-            <div class="portfolio-img p3">
-              <span>
-                <div class="slider">
-                  <div class="slides">
-                    <img src='assets/railorh.png' alt='Rai loRH'>
-                    <img src='assets/railorh2.jpeg' alt='Rai loRH'>
-                  </div>
-                </div>
-              </span>
-              <div class="portfolio-overlay"></div>
+          <a class="work-card" href="https://site-rairorh.vercel.app/" target="_blank" rel="noopener">
+            <div class="work-img">
+              <img src="assets/railorh.png" alt="Railo RH" draggable="false" loading="lazy">
+              <img src="assets/railorh2.jpeg" alt="" draggable="false" loading="lazy">
+            </div>
+            <div class="work-meta">
+              <div>
+                <span class="work-idx">02</span>
+                <h3>Railo RH</h3>
+                <p>Sistema de gestão de recursos humanos</p>
+              </div>
+              <span class="work-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></span>
             </div>
           </a>
-          <div class="portfolio-arrow"><a href="https://site-rairorh.vercel.app/" target="_blank">↗</a></div>
-          <div class="portfolio-info">
-            <h3>Railo RH</h3>
-            <p>Sistema de gestão de recursos humanos</p>
-          </div>
+          <a class="work-card" href="https://pelenextgen.vercel.app/" target="_blank" rel="noopener">
+            <div class="work-img">
+              <img src="assets/pelenextgen.png" alt="PeleNextGen" draggable="false" loading="lazy">
+              <img src="assets/pelenextgen2.png" alt="" draggable="false" loading="lazy">
+            </div>
+            <div class="work-meta">
+              <div>
+                <span class="work-idx">03</span>
+                <h3>PeleNextGen</h3>
+                <p>Plataforma web</p>
+              </div>
+              <span class="work-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></span>
+            </div>
+          </a>
+          <a class="work-card" href="https://shinatal.shinerio.com/" target="_blank" rel="noopener">
+            <div class="work-img">
+              <img src="assets/shinatal.png" alt="Shinatal" draggable="false" loading="lazy">
+              <img src="assets/shinatal2.png" alt="" draggable="false" loading="lazy">
+            </div>
+            <div class="work-meta">
+              <div>
+                <span class="work-idx">04</span>
+                <h3>Shinatal</h3>
+                <p>Site institucional</p>
+              </div>
+              <span class="work-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></span>
+            </div>
+          </a>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- TESTIMONIALS -->
-
-  <!-- CONTACT -->
-  <section class="section-light" id="contato">
-    <div class="container">
-      <div class="reveal text-center">
-        <span class="section-label">Vamos conversar</span>
-        <h2 class="section-title">Pronto para ter um site <span class="gold">premium</span>?</h2>
-        <div class="divider center"></div>
-        <p class="section-sub">Preencha o formulário e entraremos em contato em até 24 horas para entender seu projeto.</p>
-      </div>
-      <div class="contact-wrap">
-        <div class="reveal">
-          <h3>Informações de contato</h3>
-          <p>Prefere falar diretamente? Escolha o canal mais conveniente para você.</p>
-          <div class="contact-detail">
-            <div>
-              <strong>E-mail</strong>
-              <a href="mailto:contato@npcodesolutions.com.br" target="_blank">contato@npcodesolutions.com.br</a>
-            </div>
-          </div>
-          <div class="contact-detail">
-            <div>
-              <strong>WhatsApp</strong>
-              <a href="https://wa.me/5521974845065" target="_blank"><span>+55 (21) 97484-5065</span></a>
-            </div>
-          </div>
-          <div class="contact-detail">
-            <div>
-              <strong>Localização</strong>
-              <span>Rio de Janeiro, RJ, Brasil</span>
-            </div>
-          </div>
-          <div class="contact-detail">
-            <div>
-              <strong>Horário</strong>
-              <span>Seg a Sex, 9h às 18h</span>
-            </div>
-          </div>
+    <!-- CONTACT -->
+    <section class="section-light" id="contato">
+      <div class="container">
+        <div class="reveal text-center">
+          <span class="section-label"><b>05</b> Vamos conversar</span>
+          <h2 class="section-title">Pronto para ter um site <span class="gold">premium</span>?</h2>
+          <div class="divider center"></div>
+          <p class="section-sub">Preencha o formulário e entraremos em contato em até 24 horas para entender seu projeto.</p>
         </div>
-        <div class="contact-form reveal" style="transition-delay:.15s" id="contactForm">
-          <div id="formFields">
+        <div class="contact-wrap">
+          <div class="contact-info reveal">
+            <h3>Informações de contato</h3>
+            <p>Prefere falar diretamente? Escolha o canal mais conveniente para você.</p>
+            <a class="contact-detail spot" href="mailto:contato@npcodesolutions.com.br">
+              <span class="contact-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></span>
+              <div>
+                <strong>E-mail</strong>
+                <span>contato@npcodesolutions.com.br</span>
+              </div>
+            </a>
+            <a class="contact-detail spot" href="https://wa.me/5521974845065" target="_blank" rel="noopener">
+              <span class="contact-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></span>
+              <div>
+                <strong>WhatsApp</strong>
+                <span>+55 (21) 97484-5065</span>
+              </div>
+            </a>
+            <div class="contact-detail spot">
+              <span class="contact-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span>
+              <div>
+                <strong>Localização</strong>
+                <span>Rio de Janeiro, RJ, Brasil</span>
+              </div>
+            </div>
+            <div class="contact-detail spot">
+              <span class="contact-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>
+              <div>
+                <strong>Horário</strong>
+                <span>Seg a Sex, 9h às 18h</span>
+              </div>
+            </div>
+          </div>
+          <form class="contact-form spot reveal" style="transition-delay:.15s" id="contactForm" action="https://formsubmit.co/contato@npcodesolutions.com.br" method="POST">
+            <input type="hidden" name="_subject" value="Novo contato pelo site NP Code" />
             <div class="form-row">
               <div class="field">
-                <form action="https://formsubmit.co/contato@npcodesolutions.com.br" method="POST">
-                  <label for="nome">Nome</label>
-                  <input type="text" id="nome" name="name" placeholder="Seu nome" />
+                <label for="nome">Nome</label>
+                <input type="text" id="nome" name="name" placeholder="Seu nome" required />
               </div>
               <div class="field">
                 <label for="empresa">Empresa</label>
@@ -300,7 +434,7 @@
             </div>
             <div class="field">
               <label for="email">E-mail</label>
-              <input type="email" id="email" name="email" placeholder="seu@email.com" />
+              <input type="email" id="email" name="email" placeholder="seu@email.com" required />
             </div>
             <div class="field">
               <label for="servico">Serviço de interesse</label>
@@ -318,105 +452,93 @@
               <label for="mensagem">Mensagem</label>
               <textarea id="mensagem" name="message" placeholder="Conte um pouco sobre seu projeto…"></textarea>
             </div>
-            <button type="submit" class="btn-primary form-submit">Enviar mensagem →</button>
-          </div>
-          <div class="form-success" id="formSuccess">
-            <div class="success-icon">✅</div>
-            <h4>Mensagem enviada!</h4>
-            <p>Recebemos seu contato e retornaremos em até 24 horas. Fique de olho no seu e-mail!</p>
-          </div>
+            <button type="submit" class="btn-primary form-submit">
+              Enviar mensagem
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </button>
+          </form>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- FOOTER -->
-  <footer>
-    <div class="container footer-top">
-      <div class="footer-brand">
-        <a href="#" class="footer-logo">
-          <img src="assets/logo branca.png" alt="NP Code Solutions" />
+    <!-- FOOTER -->
+    <footer class="site-footer" id="siteFooter">
+      <div class="container footer-cta reveal">
+        <div>
+          <span class="avail"><i></i>Disponível para novos projetos</span>
+          <h2>Vamos construir algo <span class="gold">extraordinário</span> juntos?</h2>
+        </div>
+        <a href="#contato" class="btn-primary magnetic">
+          Iniciar projeto
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
         </a>
-        <p class="footer-tagline">Sites e sistemas sob medida, com design premium e performance de verdade. A gente bota seu negócio na tela.</p>
-        <div class="footer-social">
-          <a href="https://www.instagram.com/np_code.solutions/" target="_blank" rel="noopener" class="social-icon" aria-label="Instagram">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
-              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
-              <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
-            </svg>
+      </div>
+
+      <div class="container"><div class="footer-line"></div></div>
+
+      <div class="container footer-top">
+        <div class="footer-brand reveal">
+          <a href="#inicio" class="footer-logo">
+            <img src="assets/logo branca.png" alt="NP Code Solutions" />
           </a>
-          <a href="#" target="_blank" rel="noopener" class="social-icon" aria-label="Facebook">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
-            </svg>
-          </a>
-          <a href="https://wa.me/5521974845065" target="_blank" rel="noopener" class="social-icon" aria-label="WhatsApp">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
-            </svg>
-          </a>
-          <a href="mailto:contato@npcodesolutions.com.br" class="social-icon" aria-label="E-mail">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-              <polyline points="22,6 12,13 2,6"/>
-            </svg>
-          </a>
+          <p class="footer-tagline">Sites e sistemas sob medida, com design premium e performance de verdade. A gente bota seu negócio na tela.</p>
+          <div class="footer-social">
+            <a href="https://www.instagram.com/np_code.solutions/" target="_blank" rel="noopener" class="social-icon" aria-label="Instagram" data-label="Instagram">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+                <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
+              </svg>
+            </a>
+            <a href="#" target="_blank" rel="noopener" class="social-icon" aria-label="Facebook" data-label="Facebook">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+              </svg>
+            </a>
+            <a href="https://wa.me/5521974845065" target="_blank" rel="noopener" class="social-icon" aria-label="WhatsApp" data-label="WhatsApp">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+              </svg>
+            </a>
+            <a href="mailto:contato@npcodesolutions.com.br" class="social-icon" aria-label="E-mail" data-label="E-mail">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                <polyline points="22,6 12,13 2,6"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+        <div class="footer-col reveal" style="transition-delay:.1s">
+          <h4>Navegação</h4>
+          <ul class="footer-links">
+            <li><a href="#sobre">Sobre</a></li>
+            <li><a href="#servicos">Serviços</a></li>
+            <li><a href="#processo">Processo</a></li>
+            <li><a href="#portfolio">Portfólio</a></li>
+            <li><a href="#contato">Contato</a></li>
+          </ul>
+        </div>
+        <div class="footer-col reveal" style="transition-delay:.2s">
+          <h4>Contato</h4>
+          <ul class="footer-links">
+            <li><a href="mailto:contato@npcodesolutions.com.br">contato@npcodesolutions.com.br</a></li>
+            <li><a href="https://wa.me/5521974845065" target="_blank" rel="noopener">+55 (21) 97484-5065</a></li>
+            <li><span>Rio de Janeiro, RJ, Brasil</span></li>
+            <li><span>Seg a Sex, 9h às 18h</span></li>
+          </ul>
         </div>
       </div>
-      <div class="footer-col">
-        <h4>Navegação</h4>
-        <ul class="footer-links">
-          <li><a href="#sobre">Sobre</a></li>
-          <li><a href="#servicos">Serviços</a></li>
-          <li><a href="#processo">Processo</a></li>
-          <li><a href="#portfolio">Portfólio</a></li>
-          <li><a href="#contato">Contato</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Contato</h4>
-        <ul class="footer-links">
-          <li><a href="mailto:contato@npcodesolutions.com.br">contato@npcodesolutions.com.br</a></li>
-          <li><a href="https://wa.me/5521974845065" target="_blank" rel="noopener">+55 (21) 97484-5065</a></li>
-          <li><span>Rio de Janeiro, RJ, Brasil</span></li>
-        </ul>
-      </div>
-    </div>
-    <div class="container footer-bottom">
-      <p class="footer-copy">© 2026 NP Code Solutions. Todos os direitos reservados.</p>
-    </div>
-  </footer>
 
-  <!-- FLOATING SOCIAL DOCK -->
-  <div class="float-dock">
-    <div class="float-item">
-      <div class="float-preview float-preview-simple">Siga no Instagram</div>
-      <a href="https://www.instagram.com/np_code.solutions/" target="_blank" rel="noopener" class="social-icon float-icon" aria-label="Instagram">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
-          <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
-          <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
-        </svg>
-      </a>
-    </div>
-    <div class="float-item">
-      <div class="float-preview">
-        <strong>Fale conosco</strong>
-        <p>Olá! Precisa de ajuda?</p>
+      <div class="footer-wordmark" id="footerWordmark" aria-hidden="true">NP CODE</div>
+
+      <div class="container footer-bottom">
+        <p class="footer-copy">© 2026 NP Code Solutions. Todos os direitos reservados.</p>
+        <a href="#inicio" class="to-top" aria-label="Voltar ao topo">
+          Voltar ao topo
+          <span class="to-top-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg></span>
+        </a>
       </div>
-      <a
-        href="https://wa.me/5521974845065?text=Olá!%20Vim%20pelo%20site%20e%20gostaria%20de%20mais%20informações."
-        target="_blank"
-        rel="noopener"
-        class="social-icon float-icon"
-        aria-label="WhatsApp"
-      >
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
-        </svg>
-      </a>
-    </div>
+    </footer>
   </div>
 
   <script src="script.js"></script>
