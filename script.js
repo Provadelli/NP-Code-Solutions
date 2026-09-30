@@ -1,23 +1,40 @@
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+// The accessibility panel can pause motion at runtime, so loops ask on every tick.
+const motionOff = () => reduceMotion || document.documentElement.classList.contains('a11y-motion');
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
 
 /* ── HAMBURGER ── */
 const ham = document.getElementById('hamburger');
 const mob = document.getElementById('mobileMenu');
+// Everything behind the open menu is made inert so focus cannot leak out of it.
+const behindMenu = ['#conteudo', '#siteFooter', '#a11y', '.nav-logo']
+  .map(sel => document.querySelector(sel)).filter(Boolean);
 
-ham.addEventListener('click', () => {
-  const open = ham.classList.toggle('open');
+function setMenu(open, { returnFocus = true } = {}) {
+  ham.classList.toggle('open', open);
   mob.classList.toggle('open', open);
+  ham.setAttribute('aria-expanded', String(open));
+  ham.setAttribute('aria-label', open ? 'Fechar menu' : 'Abrir menu');
+  behindMenu.forEach(el => { el.inert = open; });
   document.body.style.overflow = open ? 'hidden' : '';
-});
+  if (open) mob.querySelector('a').focus();
+  else if (returnFocus) ham.focus();
+}
+
+ham.addEventListener('click', () => setMenu(!ham.classList.contains('open')));
 
 document.querySelectorAll('.mob-link').forEach(a => {
-  a.addEventListener('click', () => {
-    ham.classList.remove('open');
-    mob.classList.remove('open');
-    document.body.style.overflow = '';
-  });
+  a.addEventListener('click', () => setMenu(false, { returnFocus: false }));
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && ham.classList.contains('open')) setMenu(false);
+});
+
+// Leaving the mobile breakpoint with the menu open would strand the inert page.
+window.matchMedia('(min-width: 601px)').addEventListener('change', (e) => {
+  if (e.matches && ham.classList.contains('open')) setMenu(false, { returnFocus: false });
 });
 
 /* ── SCROLL REVEAL ── */
@@ -47,7 +64,12 @@ document.querySelectorAll('.reveal, .process-steps, .footer-line').forEach(el =>
       const top = s.getBoundingClientRect().top + window.scrollY;
       if (y >= top && y < top + s.offsetHeight) current = s.id;
     });
-    navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === `#${current}`));
+    navLinks.forEach(a => {
+      const on = a.getAttribute('href') === `#${current}`;
+      a.classList.toggle('active', on);
+      if (on) a.setAttribute('aria-current', 'location');
+      else a.removeAttribute('aria-current');
+    });
   }
 
   window.addEventListener('scroll', update, { passive: true });
@@ -125,6 +147,7 @@ document.querySelectorAll('.reveal, .process-steps, .footer-line').forEach(el =>
   }
 
   setInterval(() => {
+    if (motionOff() || document.hidden) return;
     index = (index + 1) % WORDS.length;
     play(WORDS[index]);
   }, 2000);
@@ -172,7 +195,7 @@ document.querySelectorAll('.reveal, .process-steps, .footer-line').forEach(el =>
   heroObserver.observe(hero);
 
   async function gate() {
-    while (!active) await sleep(300);
+    while (!active || motionOff()) await sleep(300);
   }
 
   function renderLine(text, instant) {
@@ -254,7 +277,7 @@ document.querySelectorAll('.reveal, .process-steps, .footer-line').forEach(el =>
   const kick = () => { if (!raf) raf = requestAnimationFrame(loop); };
 
   hero.addEventListener('pointermove', (e) => {
-    if (e.pointerType !== 'mouse') return;
+    if (e.pointerType !== 'mouse' || motionOff()) return;
     const r = visual.getBoundingClientRect();
     const nx = clamp((e.clientX - (r.left + r.width / 2)) / (window.innerWidth / 2), -1, 1);
     const ny = clamp((e.clientY - (r.top + r.height / 2)) / (window.innerHeight / 2), -1, 1);
@@ -324,7 +347,7 @@ document.querySelectorAll('.reveal, .process-steps, .footer-line').forEach(el =>
     ctx.textBaseline = 'middle';
 
     for (const p of particles) {
-      if (!reduceMotion) {
+      if (!motionOff()) {
         p.x += p.vx;
         p.y += p.vy + Math.sin(now / 2000 + p.phase) * 0.03;
         if (p.x < -20) p.x = W + 20;
@@ -482,7 +505,7 @@ document.querySelectorAll('.reveal, .process-steps, .footer-line').forEach(el =>
   root.addEventListener('focusin', () => { hold = true; });
   root.addEventListener('focusout', () => { hold = false; });
   setInterval(() => {
-    if (inView && !hold && !drag && !document.hidden) nudge(1);
+    if (inView && !hold && !drag && !document.hidden && !motionOff()) nudge(1);
   }, 5000);
 })();
 
@@ -523,17 +546,67 @@ document.querySelectorAll('.reveal, .process-steps, .footer-line').forEach(el =>
     resizeT = setTimeout(build, 150);
   });
 
-  const BASE_SPEED = reduceMotion ? 0 : 55; // px per second
+  const BASE_SPEED = 55; // px per second
   let x = 0;
-  let speed = BASE_SPEED;
-  let target = BASE_SPEED;
+  let speed = motionOff() ? 0 : BASE_SPEED;
+  let hovering = false;
+  let userPaused = false;
+  let focusHold = false;
   let visible = true;
   let last = performance.now();
 
+  const targetSpeed = () => (hovering || userPaused || focusHold || motionOff() ? 0 : BASE_SPEED);
+
   new IntersectionObserver(([e]) => { visible = e.isIntersecting; }, { threshold: 0 }).observe(marquee);
 
-  marquee.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse') target = 0; });
-  marquee.addEventListener('pointerleave', () => { target = BASE_SPEED; });
+  marquee.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse') hovering = true; });
+  marquee.addEventListener('pointerleave', () => { hovering = false; });
+
+  /* Pause / play button (WCAG 2.2.2: moving content must be pausable) */
+  const toggle = document.getElementById('workToggle');
+  const toggleLabel = toggle && toggle.querySelector('.work-toggle-label');
+  function syncToggle() {
+    if (!toggle) return;
+    toggle.hidden = reduceMotion; // the OS setting keeps the strip still for good
+    const paused = userPaused || motionOff();
+    toggle.setAttribute('aria-pressed', String(paused));
+    toggleLabel.textContent = paused ? 'Retomar' : 'Pausar';
+    toggle.setAttribute('aria-label', paused ? 'Retomar movimento dos projetos' : 'Pausar movimento dos projetos');
+  }
+  if (toggle) {
+    toggle.addEventListener('click', () => {
+      if (motionOff() && !userPaused) {
+        // Motion is paused globally; the button then only reflects that state.
+        document.dispatchEvent(new CustomEvent('np:request-motion'));
+      } else {
+        userPaused = !userPaused;
+      }
+      syncToggle();
+    });
+    document.addEventListener('np:prefs', syncToggle);
+    syncToggle();
+  }
+
+  /* Keyboard: freeze the strip and bring the focused card into view.
+     While focused the strip does not wrap, so the real card (not a clone) stays on screen. */
+  marquee.addEventListener('focusin', (e) => {
+    const card = e.target.closest('.work-card');
+    if (!card) return;
+    focusHold = true;
+    speed = 0;
+    marquee.scrollLeft = 0;
+    const vr = marquee.getBoundingClientRect();
+    const r = card.getBoundingClientRect();
+    const pad = vr.width * 0.08;
+    if (r.left < vr.left + pad || r.right > vr.right - pad) {
+      x += (vr.left + vr.width / 2) - (r.left + r.width / 2);
+      const min = -(track.scrollWidth - marquee.clientWidth);
+      x = clamp(x, min, 0);
+    }
+  });
+  marquee.addEventListener('focusout', (e) => {
+    if (!marquee.contains(e.relatedTarget)) focusHold = false;
+  });
 
   /* Drag */
   let down = null;
@@ -569,9 +642,9 @@ document.querySelectorAll('.reveal, .process-steps, .footer-line').forEach(el =>
     const dt = Math.min(0.05, (now - last) / 1000);
     last = now;
     if (visible) {
-      speed += (target - speed) * 0.06;
+      speed += (targetSpeed() - speed) * 0.06;
       if (!down) x -= speed * dt;
-      if (setW) {
+      if (setW && !focusHold) {
         while (x <= -setW) { x += setW; if (down) down.start += setW; }
         while (x > 0) { x -= setW; if (down) down.start -= setW; }
       }
@@ -596,7 +669,7 @@ document.querySelectorAll('.reveal, .process-steps, .footer-line').forEach(el =>
   /* Each card crossfades between its two screenshots */
   let flip = false;
   setInterval(() => {
-    if (!visible || document.hidden) return;
+    if (!visible || document.hidden || motionOff() || userPaused) return;
     flip = !flip;
     originals.forEach((_, i) => {
       setTimeout(() => {
@@ -627,7 +700,7 @@ document.querySelectorAll('.reveal, .process-steps, .footer-line').forEach(el =>
     stop();
     const from = window.scrollY;
     if (from <= 0) return;
-    if (reduceMotion) { window.scrollTo({ top: 0, behavior: 'instant' }); return; }
+    if (motionOff()) { window.scrollTo({ top: 0, behavior: 'instant' }); return; }
 
     // Longer pages get a longer ride, within a range that still feels snappy.
     const duration = clamp(from * 0.35, 900, 2200);
@@ -667,7 +740,7 @@ document.addEventListener('pointermove', (e) => {
 if (!reduceMotion) {
   document.querySelectorAll('.magnetic').forEach(el => {
     el.addEventListener('pointermove', (e) => {
-      if (e.pointerType !== 'mouse') return;
+      if (e.pointerType !== 'mouse' || motionOff()) return;
       const r = el.getBoundingClientRect();
       const dx = e.clientX - (r.left + r.width / 2);
       const dy = e.clientY - (r.top + r.height / 2);
@@ -687,4 +760,274 @@ if (!reduceMotion) {
     mark.style.setProperty('--mx', `${e.clientX - r.left}px`);
     mark.style.setProperty('--my', `${e.clientY - r.top}px`);
   }, { passive: true });
+})();
+
+/* ── LEGAL DIALOGS (Política de Privacidade / Termos de Uso) ──
+   Native <dialog>: focus is trapped and Esc closes it for free.
+   Focus returns to whatever opened the first dialog in the chain. */
+(() => {
+  const HASHES = { dlgPrivacy: '#politica-de-privacidade', dlgTerms: '#termos-de-uso' };
+  let opener = null;
+
+  function open(id, trigger) {
+    const dlg = document.getElementById(id);
+    if (!dlg || typeof dlg.showModal !== 'function') return false;
+    const current = document.querySelector('dialog.legal[open]');
+    if (current === dlg) return true;
+    if (current) current.close();
+    else opener = trigger || document.activeElement;
+    dlg.showModal();
+    const body = dlg.querySelector('.legal-body');
+    if (body) body.scrollTop = 0;
+    dlg.querySelector('.legal-close').focus();
+    return true;
+  }
+
+  document.addEventListener('click', (e) => {
+    const trigger = e.target.closest('[data-open-dialog]');
+    if (trigger && open(trigger.dataset.openDialog, trigger)) {
+      e.preventDefault();
+      return;
+    }
+    const closer = e.target.closest('[data-close-dialog]');
+    if (closer) closer.closest('dialog').close();
+  });
+
+  document.querySelectorAll('dialog.legal').forEach(dlg => {
+    // A click on the backdrop lands on the <dialog> itself.
+    dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });
+    dlg.addEventListener('close', () => {
+      if (document.querySelector('dialog.legal[open]')) return;
+      if (location.hash === HASHES[dlg.id]) history.replaceState(null, '', location.pathname + location.search);
+      if (opener && document.contains(opener)) opener.focus();
+      opener = null;
+    });
+  });
+
+  // Deep links such as /#politica-de-privacidade open the matching document.
+  function fromHash() {
+    const id = Object.keys(HASHES).find(k => HASHES[k] === location.hash);
+    if (id) open(id, document.getElementById('conteudo'));
+  }
+  window.addEventListener('hashchange', fromHash);
+  fromHash();
+})();
+
+/* ── ACCESSIBILITY PANEL ──
+   Preferences live only in this browser (localStorage) and are applied
+   before first paint by the inline script in <head>. */
+(() => {
+  const root = document.documentElement;
+  const wrap = document.getElementById('a11y');
+  const btn = document.getElementById('a11yToggle');
+  const panel = document.getElementById('a11yPanel');
+  if (!wrap || !btn || !panel) return;
+
+  const KEY = 'np-a11y';
+  const SCALES = [100, 112.5, 125, 137.5, 150];
+  const TOGGLES = ['contrast', 'motion', 'links', 'readable'];
+  const out = document.getElementById('a11yScaleValue');
+  const down = panel.querySelector('[data-a11y-scale="-1"]');
+  const up = panel.querySelector('[data-a11y-scale="1"]');
+
+  function load() {
+    try { return JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch (e) { return {}; }
+  }
+  function save(p) {
+    try { localStorage.setItem(KEY, JSON.stringify(p)); } catch (e) { /* private mode: session only */ }
+  }
+
+  let prefs = load();
+
+  function apply() {
+    const scale = SCALES.includes(prefs.scale) ? prefs.scale : 100;
+    root.style.fontSize = scale === 100 ? '' : scale + '%';
+    out.textContent = String(scale).replace('.', ',') + '%';
+    down.disabled = scale === SCALES[0];
+    up.disabled = scale === SCALES[SCALES.length - 1];
+    TOGGLES.forEach(k => {
+      root.classList.toggle('a11y-' + k, !!prefs[k]);
+      const b = panel.querySelector(`[data-a11y-toggle="${k}"]`);
+      if (b) b.setAttribute('aria-pressed', String(!!prefs[k]));
+    });
+    document.dispatchEvent(new CustomEvent('np:prefs'));
+    // Layout-dependent pieces (sticky hero, marquee, carousel) re-measure on resize.
+    window.dispatchEvent(new Event('resize'));
+  }
+
+  function update(patch) {
+    prefs = { ...prefs, ...patch };
+    save(prefs);
+    apply();
+  }
+
+  function setOpen(open, focusBack = true) {
+    panel.hidden = !open;
+    btn.setAttribute('aria-expanded', String(open));
+    if (open) panel.querySelector('button').focus();
+    else if (focusBack) btn.focus();
+  }
+
+  btn.addEventListener('click', () => setOpen(panel.hidden));
+  document.getElementById('a11yClose').addEventListener('click', () => setOpen(false));
+  document.querySelectorAll('[data-open-a11y]').forEach(b => b.addEventListener('click', () => setOpen(true)));
+
+  panel.addEventListener('click', (e) => {
+    const s = e.target.closest('[data-a11y-scale]');
+    if (s) {
+      const i = SCALES.indexOf(SCALES.includes(prefs.scale) ? prefs.scale : 100);
+      const next = SCALES[clamp(i + Number(s.dataset.a11yScale), 0, SCALES.length - 1)];
+      update({ scale: next });
+      return;
+    }
+    const t = e.target.closest('[data-a11y-toggle]');
+    if (t) update({ [t.dataset.a11yToggle]: !prefs[t.dataset.a11yToggle] });
+  });
+
+  document.getElementById('a11yReset').addEventListener('click', () => {
+    prefs = {};
+    try { localStorage.removeItem(KEY); } catch (e) {}
+    apply();
+  });
+
+  // The portfolio "Retomar" button asks to lift the global pause.
+  document.addEventListener('np:request-motion', () => update({ motion: false }));
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !panel.hidden) setOpen(false);
+  });
+  document.addEventListener('pointerdown', (e) => {
+    if (!panel.hidden && !wrap.contains(e.target)) setOpen(false, false);
+  });
+
+  apply();
+})();
+
+/* ── CONTACT FORM: validation, consent and async submit ── */
+(() => {
+  const form = document.getElementById('contactForm');
+  if (!form) return;
+
+  const ENDPOINT = 'https://formsubmit.co/ajax/contato@npcodesolutions.com.br';
+  const POLICY_VERSION = '30/09/2026';
+  const status = document.getElementById('formStatus');
+  const submit = document.getElementById('formSubmit');
+  const submitLabel = submit.querySelector('.submit-label');
+  const message = document.getElementById('mensagem');
+  const counter = document.getElementById('mensagem-contador');
+  const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+  const RULES = {
+    nome: (v) => {
+      if (!v) return 'Informe seu nome.';
+      if (v.length < 2) return 'O nome precisa ter pelo menos 2 caracteres.';
+      return '';
+    },
+    email: (v) => {
+      if (!v) return 'Informe seu e-mail para podermos responder.';
+      if (!EMAIL_RE.test(v)) return 'Digite um e-mail válido, por exemplo: nome@empresa.com.br.';
+      return '';
+    },
+    mensagem: (v) => {
+      if (!v) return 'Conte um pouco sobre o seu projeto.';
+      if (v.length < 10) return `Escreva pelo menos 10 caracteres (faltam ${10 - v.length}).`;
+      return '';
+    },
+    consentimento: (_, el) => (el.checked ? '' : 'Para enviar, é preciso concordar com a Política de Privacidade e os Termos de Uso.'),
+  };
+
+  const fields = Object.keys(RULES).map(id => document.getElementById(id));
+  const touched = new Set();
+
+  function check(el) {
+    const msg = RULES[el.id](el.value.trim(), el);
+    const err = document.getElementById(`${el.id}-erro`);
+    // Only rewrite the message when it changes, so screen readers are not spammed.
+    if (err.textContent !== msg) err.textContent = msg;
+    el.setAttribute('aria-invalid', String(!!msg));
+    el.classList.toggle('is-valid', !msg && el.type !== 'checkbox');
+    return !msg;
+  }
+
+  fields.forEach(el => {
+    // Validate after the user leaves a field, then live while they fix it.
+    el.addEventListener('blur', () => { if (el.value.trim() || touched.has(el.id)) { touched.add(el.id); check(el); } });
+    el.addEventListener(el.type === 'checkbox' ? 'change' : 'input', () => { if (touched.has(el.id)) check(el); });
+  });
+
+  function updateCounter() {
+    const max = Number(message.getAttribute('maxlength'));
+    const n = message.value.length;
+    counter.textContent = `${n} / ${max}`;
+    counter.classList.toggle('near', n > max * 0.9);
+  }
+  message.addEventListener('input', updateCounter);
+  updateCounter();
+
+  function setStatus(kind, html) {
+    status.className = `form-status ${kind}`;
+    status.innerHTML = html;
+  }
+
+  function setBusy(busy) {
+    submit.disabled = busy;
+    submit.setAttribute('aria-busy', String(busy));
+    submitLabel.textContent = busy ? 'Enviando…' : 'Enviar mensagem';
+  }
+
+  const escapeHtml = (str) => str.replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    fields.forEach(el => touched.add(el.id));
+    const invalid = fields.filter(el => !check(el));
+    if (invalid.length) {
+      setStatus('err', invalid.length === 1
+        ? 'Revise o campo destacado para enviar sua mensagem.'
+        : `Revise os ${invalid.length} campos destacados para enviar sua mensagem.`);
+      invalid[0].focus();
+      return;
+    }
+
+    const data = Object.fromEntries(new FormData(form));
+    const firstName = escapeHtml(String(data.name).trim().split(/\s+/)[0]);
+    const email = escapeHtml(String(data.email).trim());
+
+    // Bots fill the hidden field; pretend success and drop the message.
+    if (data._honey) {
+      setStatus('ok', 'Mensagem enviada! Obrigado pelo contato.');
+      form.reset();
+      return;
+    }
+    delete data._honey;
+    data.consentimento_lgpd = `Sim. Aceite da Política de Privacidade e dos Termos de Uso (versão ${POLICY_VERSION}) em ${new Date().toLocaleString('pt-BR')}`;
+
+    setBusy(true);
+    setStatus('', '');
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), 15000);
+
+    try {
+      const res = await fetch(ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify(data),
+        signal: ctrl.signal,
+      });
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok || String(json.success) !== 'true') throw new Error(json.message || `HTTP ${res.status}`);
+
+      setStatus('ok', `<strong>Mensagem enviada!</strong> Obrigado, ${firstName}. Vamos responder em até 24 horas úteis no e-mail <strong>${email}</strong>.`);
+      form.reset();
+      touched.clear();
+      fields.forEach(el => { el.removeAttribute('aria-invalid'); el.classList.remove('is-valid'); });
+      updateCounter();
+    } catch (err) {
+      setStatus('err', 'Não conseguimos enviar sua mensagem agora. Seus dados continuam no formulário: tente novamente em instantes ou fale com a gente pelo <a href="https://wa.me/5521974845065" target="_blank" rel="noopener">WhatsApp<span class="sr-only"> (abre em nova aba)</span></a> ou pelo e-mail <a href="mailto:contato@npcodesolutions.com.br">contato@npcodesolutions.com.br</a>.');
+      status.focus();
+    } finally {
+      clearTimeout(timer);
+      setBusy(false);
+    }
+  });
 })();

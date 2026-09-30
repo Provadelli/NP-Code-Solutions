@@ -9,14 +9,28 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <meta name="theme-color" content="#020a14" />
   <link rel="stylesheet" href="style.css" />
+  <script>
+    /* Applies saved accessibility preferences before first paint (no flash). */
+    (function () {
+      try {
+        var p = JSON.parse(localStorage.getItem('np-a11y') || '{}');
+        var h = document.documentElement;
+        if (p.scale) h.style.fontSize = p.scale + '%';
+        ['contrast', 'motion', 'links', 'readable'].forEach(function (k) { if (p[k]) h.classList.add('a11y-' + k); });
+      } catch (e) {}
+    })();
+  </script>
 </head>
 <body>
+  <a href="#conteudo" class="skip-link">Pular para o conteúdo principal</a>
+
   <!-- NAV -->
-  <nav id="siteNav">
+  <nav id="siteNav" aria-label="Navegação principal">
     <div class="container nav-inner">
-      <a href="#inicio" class="nav-logo">
-        <img src="assets/logo branca.png" alt="NP Code Solutions" />
+      <a href="#inicio" class="nav-logo" aria-label="NP Code Solutions, voltar ao início">
+        <img src="assets/logo branca.png" alt="" />
       </a>
       <ul class="nav-links">
         <li><a href="#sobre">Sobre</a></li>
@@ -31,22 +45,23 @@
         </li>
       </ul>
       <div class="nav-right">
-        <button class="hamburger" id="hamburger" aria-label="Menu">
-          <span></span><span></span><span></span>
+        <button type="button" class="hamburger" id="hamburger" aria-label="Abrir menu" aria-expanded="false" aria-controls="mobileMenu">
+          <span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span>
         </button>
       </div>
     </div>
   </nav>
 
   <!-- MOBILE MENU -->
-  <div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu" id="mobileMenu" role="dialog" aria-modal="true" aria-label="Menu de navegação">
     <a href="#sobre" class="mob-link">Sobre</a>
     <a href="#servicos" class="mob-link">Serviços</a>
     <a href="#processo" class="mob-link">Processo</a>
     <a href="#portfolio" class="mob-link">Portfólio</a>
-    <a href="#contato" class="mob-link" style="color:var(--gold-hi)">Contato</a>
+    <a href="#contato" class="mob-link mob-cta">Contato</a>
   </div>
 
+  <main id="conteudo" tabindex="-1">
   <!-- HERO -->
   <section class="hero" id="inicio">
     <div class="hero-bg" id="heroBg" aria-hidden="true">
@@ -65,9 +80,10 @@
           <span class="line"><span>seu negócio</span></span>
           <span class="line"><span><em class="gold">na tela.</em></span></span>
         </h1>
-        <div class="hero-scramble h-anim" aria-live="polite">
+        <p class="sr-only">Criamos sites institucionais, landing pages, e-commerce, sistemas web, aplicativos e identidade digital.</p>
+        <div class="hero-scramble h-anim" aria-hidden="true">
           <span class="scr-prefix">Criamos</span>
-          <span class="scramble" id="scramble">Sites institucionais</span><span class="scr-caret" aria-hidden="true"></span>
+          <span class="scramble" id="scramble">Sites institucionais</span><span class="scr-caret"></span>
         </div>
         <p class="hero-sub h-anim">Websites de alto desempenho e identidade visual para marcas que não se conformam com o ordinário.</p>
         <div class="hero-actions h-anim">
@@ -101,7 +117,7 @@
             <div class="hv-bbar">
               <span class="hv-dots"><i></i><i></i><i></i></span>
               <span class="hv-url">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+                <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
                 seunegocio.com.br
               </span>
             </div>
@@ -122,7 +138,7 @@
     </div>
 
     <a href="#sobre" class="scroll-hint" aria-label="Rolar para a próxima seção">
-      <span class="scroll-line"></span>
+      <span class="scroll-line" aria-hidden="true"></span>
       Role para explorar
     </a>
   </section>
@@ -139,17 +155,17 @@
           <p class="section-sub">A NP Code Solutions é uma equipe especializada em criar experiências digitais que unem design, tecnologia e performance. Desenvolvemos sites institucionais, landing pages, portfólios e lojas virtuais para empresas que querem fortalecer sua presença online e converter mais visitantes em clientes.</p>
         </div>
         <div class="about-stack reveal" style="transition-delay:.1s">
-          <span class="about-stack-label">Com o que trabalhamos</span>
+          <span class="about-stack-label" id="stackLabel">Com o que trabalhamos</span>
           <div class="about-marquee">
-            <div class="about-tags-track">
-              <span class="service-tag">HTML5</span>
-              <span class="service-tag">CSS3</span>
-              <span class="service-tag">JavaScript</span>
-              <span class="service-tag">React · Next.js</span>
-              <span class="service-tag">Figma</span>
-              <span class="service-tag">SEO Técnico</span>
-              <span class="service-tag">Shopify · WooCommerce</span>
-              <span class="service-tag">React Native · Flutter</span>
+            <div class="about-tags-track" role="list" aria-labelledby="stackLabel">
+              <span class="service-tag" role="listitem">HTML5</span>
+              <span class="service-tag" role="listitem">CSS3</span>
+              <span class="service-tag" role="listitem">JavaScript</span>
+              <span class="service-tag" role="listitem">React · Next.js</span>
+              <span class="service-tag" role="listitem">Figma</span>
+              <span class="service-tag" role="listitem">SEO Técnico</span>
+              <span class="service-tag" role="listitem">Shopify · WooCommerce</span>
+              <span class="service-tag" role="listitem">React Native · Flutter</span>
               <span class="service-tag" aria-hidden="true">HTML5</span>
               <span class="service-tag" aria-hidden="true">CSS3</span>
               <span class="service-tag" aria-hidden="true">JavaScript</span>
@@ -183,7 +199,7 @@
                 <article class="svc-card spot g1">
                   <div class="svc-top">
                     <span class="svc-num">( 001 )</span>
-                    <svg class="svc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></svg>
+                    <svg aria-hidden="true" focusable="false" class="svc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></svg>
                   </div>
                   <div class="svc-body">
                     <h3>Design & UI/UX</h3>
@@ -196,7 +212,7 @@
                 <article class="svc-card spot g2">
                   <div class="svc-top">
                     <span class="svc-num">( 002 )</span>
-                    <svg class="svc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                    <svg aria-hidden="true" focusable="false" class="svc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
                   </div>
                   <div class="svc-body">
                     <h3>Desenvolvimento Web</h3>
@@ -209,7 +225,7 @@
                 <article class="svc-card spot g3">
                   <div class="svc-top">
                     <span class="svc-num">( 003 )</span>
-                    <svg class="svc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                    <svg aria-hidden="true" focusable="false" class="svc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
                   </div>
                   <div class="svc-body">
                     <h3>E-commerce</h3>
@@ -222,7 +238,7 @@
                 <article class="svc-card spot g4">
                   <div class="svc-top">
                     <span class="svc-num">( 004 )</span>
-                    <svg class="svc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+                    <svg aria-hidden="true" focusable="false" class="svc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
                   </div>
                   <div class="svc-body">
                     <h3>Aplicativos Mobile</h3>
@@ -235,7 +251,7 @@
                 <article class="svc-card spot g5">
                   <div class="svc-top">
                     <span class="svc-num">( 005 )</span>
-                    <svg class="svc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+                    <svg aria-hidden="true" focusable="false" class="svc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
                   </div>
                   <div class="svc-body">
                     <h3>SEO & Performance</h3>
@@ -248,7 +264,7 @@
                 <article class="svc-card spot g6">
                   <div class="svc-top">
                     <span class="svc-num">( 006 )</span>
-                    <svg class="svc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+                    <svg aria-hidden="true" focusable="false" class="svc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
                   </div>
                   <div class="svc-body">
                     <h3>Manutenção & Suporte</h3>
@@ -260,10 +276,10 @@
             </div>
           </div>
           <button type="button" class="svc-nav svc-prev" aria-label="Serviço anterior">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+            <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
           </button>
           <button type="button" class="svc-nav svc-next" aria-label="Próximo serviço">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
           </button>
         </div>
       </div>
@@ -312,66 +328,87 @@
             <h2 class="section-title">Trabalhos que nos <span class="gold">orgulham</span></h2>
             <div class="divider"></div>
           </div>
-          <p class="work-hint">Passe o mouse para pausar · arraste para navegar</p>
+          <div class="work-controls">
+            <p class="work-hint" id="workHint">Passe o mouse para pausar · arraste ou use Tab para navegar</p>
+            <button type="button" class="work-toggle" id="workToggle" aria-pressed="false" aria-controls="workMarquee">
+              <svg class="i-pause" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+              <svg class="i-play" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"/></svg>
+              <span class="work-toggle-label">Pausar</span>
+            </button>
+          </div>
         </div>
       </div>
 
-      <div class="work-marquee" id="workMarquee">
+      <div class="work-marquee" id="workMarquee" role="region" aria-label="Projetos do portfólio" aria-describedby="workHint">
         <div class="work-track" id="workTrack">
           <a class="work-card" href="https://pinheiromichoadv.vercel.app/" target="_blank" rel="noopener">
             <div class="work-img">
-              <img src="assets/pinheiromicho.png" alt="Pinheiro Micho Advogados" draggable="false" loading="lazy">
+              <img src="assets/pinheiromicho.png" alt="" draggable="false" loading="lazy">
               <img src="assets/pinheiromicho2.png" alt="" draggable="false" loading="lazy">
             </div>
             <div class="work-meta">
               <div>
                 <span class="work-idx">01</span>
                 <h3>Pinheiro Micho Advogados</h3>
-                <p>Landing page para advocacia</p>
+                <p>Landing page para advocacia<span class="sr-only"> (abre em nova aba)</span></p>
               </div>
-              <span class="work-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></span>
+              <span class="work-arrow" aria-hidden="true"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></span>
             </div>
           </a>
           <a class="work-card" href="https://site-rairorh.vercel.app/" target="_blank" rel="noopener">
             <div class="work-img">
-              <img src="assets/railorh.png" alt="Railo RH" draggable="false" loading="lazy">
+              <img src="assets/railorh.png" alt="" draggable="false" loading="lazy">
               <img src="assets/railorh2.jpeg" alt="" draggable="false" loading="lazy">
             </div>
             <div class="work-meta">
               <div>
                 <span class="work-idx">02</span>
                 <h3>Railo RH</h3>
-                <p>Sistema de gestão de recursos humanos</p>
+                <p>Sistema de gestão de recursos humanos<span class="sr-only"> (abre em nova aba)</span></p>
               </div>
-              <span class="work-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></span>
+              <span class="work-arrow" aria-hidden="true"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></span>
             </div>
           </a>
           <a class="work-card" href="https://pelenextgen.vercel.app/" target="_blank" rel="noopener">
             <div class="work-img">
-              <img src="assets/pelenextgen.png" alt="PeleNextGen" draggable="false" loading="lazy">
+              <img src="assets/pelenextgen.png" alt="" draggable="false" loading="lazy">
               <img src="assets/pelenextgen2.png" alt="" draggable="false" loading="lazy">
             </div>
             <div class="work-meta">
               <div>
                 <span class="work-idx">03</span>
                 <h3>PeleNextGen</h3>
-                <p>Plataforma web</p>
+                <p>Plataforma web<span class="sr-only"> (abre em nova aba)</span></p>
               </div>
-              <span class="work-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></span>
+              <span class="work-arrow" aria-hidden="true"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></span>
             </div>
           </a>
           <a class="work-card" href="https://shinatal.shinerio.com/" target="_blank" rel="noopener">
             <div class="work-img">
-              <img src="assets/shinatal.png" alt="Shinatal" draggable="false" loading="lazy">
+              <img src="assets/shinatal.png" alt="" draggable="false" loading="lazy">
               <img src="assets/shinatal2.png" alt="" draggable="false" loading="lazy">
             </div>
             <div class="work-meta">
               <div>
                 <span class="work-idx">04</span>
                 <h3>Shinatal</h3>
-                <p>Site institucional</p>
+                <p>Site institucional<span class="sr-only"> (abre em nova aba)</span></p>
               </div>
-              <span class="work-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></span>
+              <span class="work-arrow" aria-hidden="true"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></span>
+            </div>
+          </a>
+          <a class="work-card" href="https://imobiliaria-atelier.vercel.app/" target="_blank" rel="noopener">
+            <div class="work-img">
+              <img src="assets/atelier.png" alt="" draggable="false" loading="lazy">
+              <img src="assets/atelier2.png" alt="" draggable="false" loading="lazy">
+            </div>
+            <div class="work-meta">
+              <div>
+                <span class="work-idx">05</span>
+                <h3>Atelier Residences</h3>
+                <p>Landing page imobiliária de alto padrão<span class="sr-only"> (abre em nova aba)</span></p>
+              </div>
+              <span class="work-arrow" aria-hidden="true"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></span>
             </div>
           </a>
         </div>
@@ -392,80 +429,126 @@
             <h3>Informações de contato</h3>
             <p>Prefere falar diretamente? Escolha o canal mais conveniente para você.</p>
             <a class="contact-detail spot" href="mailto:contato@npcodesolutions.com.br">
-              <span class="contact-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></span>
+              <span class="contact-icon"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></span>
               <div>
                 <strong>E-mail</strong>
                 <span>contato@npcodesolutions.com.br</span>
               </div>
             </a>
             <a class="contact-detail spot" href="https://wa.me/5521974845065" target="_blank" rel="noopener">
-              <span class="contact-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></span>
+              <span class="contact-icon"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></span>
               <div>
                 <strong>WhatsApp</strong>
-                <span>+55 (21) 97484-5065</span>
+                <span>+55 (21) 97484-5065</span><span class="sr-only"> (abre em nova aba)</span>
               </div>
             </a>
             <div class="contact-detail spot">
-              <span class="contact-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span>
+              <span class="contact-icon"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span>
               <div>
                 <strong>Localização</strong>
                 <span>Rio de Janeiro, RJ, Brasil</span>
               </div>
             </div>
             <div class="contact-detail spot">
-              <span class="contact-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>
+              <span class="contact-icon"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>
               <div>
                 <strong>Horário</strong>
                 <span>Seg a Sex, 9h às 18h</span>
               </div>
             </div>
           </div>
-          <form class="contact-form spot reveal" style="transition-delay:.15s" id="contactForm" action="https://formsubmit.co/contato@npcodesolutions.com.br" method="POST">
+          <form class="contact-form spot reveal" style="transition-delay:.15s" id="contactForm" action="https://formsubmit.co/contato@npcodesolutions.com.br" method="POST" novalidate aria-labelledby="formTitle" aria-describedby="formRequired">
+            <h3 class="form-title" id="formTitle">Conte sobre seu projeto</h3>
+            <p class="form-required" id="formRequired">Campos marcados com <span aria-hidden="true">*</span><span class="sr-only">asterisco</span> são obrigatórios.</p>
+
             <input type="hidden" name="_subject" value="Novo contato pelo site NP Code" />
+            <input type="hidden" name="_template" value="table" />
+            <!-- Honeypot anti-spam: invisível para pessoas, preenchido por robôs -->
+            <div class="hp" aria-hidden="true">
+              <label for="hpField">Não preencha este campo</label>
+              <input type="text" id="hpField" name="_honey" tabindex="-1" autocomplete="off" />
+            </div>
+
             <div class="form-row">
               <div class="field">
-                <label for="nome">Nome</label>
-                <input type="text" id="nome" name="name" placeholder="Seu nome" required />
+                <label for="nome">Nome <span class="req" aria-hidden="true">*</span></label>
+                <input type="text" id="nome" name="name" placeholder="Seu nome" autocomplete="name" required aria-required="true" aria-describedby="nome-erro" minlength="2" maxlength="80" />
+                <p class="field-error" id="nome-erro" aria-live="polite"></p>
               </div>
               <div class="field">
-                <label for="empresa">Empresa</label>
-                <input type="text" id="empresa" name="company" placeholder="Sua empresa" />
+                <label for="empresa">Empresa <span class="opt">(opcional)</span></label>
+                <input type="text" id="empresa" name="company" placeholder="Sua empresa" autocomplete="organization" maxlength="80" />
               </div>
             </div>
             <div class="field">
-              <label for="email">E-mail</label>
-              <input type="email" id="email" name="email" placeholder="seu@email.com" required />
+              <label for="email">E-mail <span class="req" aria-hidden="true">*</span></label>
+              <input type="email" id="email" name="email" placeholder="seu@email.com" autocomplete="email" inputmode="email" spellcheck="false" required aria-required="true" aria-describedby="email-erro" maxlength="120" />
+              <p class="field-error" id="email-erro" aria-live="polite"></p>
             </div>
             <div class="field">
-              <label for="servico">Serviço de interesse</label>
-              <select id="servico" name="service">
-                <option value="" disabled selected>Selecione um serviço</option>
-                <option>Design & UI/UX</option>
-                <option>Desenvolvimento Web</option>
-                <option>E-commerce</option>
-                <option>Aplicativo Mobile</option>
-                <option>SEO & Performance</option>
-                <option>Outro</option>
-              </select>
+              <label for="servico">Serviço de interesse <span class="opt">(opcional)</span></label>
+              <div class="select-wrap">
+                <select id="servico" name="service">
+                  <option value="" selected>Selecione um serviço</option>
+                  <option>Design & UI/UX</option>
+                  <option>Desenvolvimento Web</option>
+                  <option>E-commerce</option>
+                  <option>Aplicativo Mobile</option>
+                  <option>SEO & Performance</option>
+                  <option>Outro</option>
+                </select>
+              </div>
             </div>
             <div class="field">
-              <label for="mensagem">Mensagem</label>
-              <textarea id="mensagem" name="message" placeholder="Conte um pouco sobre seu projeto…"></textarea>
+              <div class="label-row">
+                <label for="mensagem">Mensagem <span class="req" aria-hidden="true">*</span></label>
+                <span class="char-count" id="mensagem-contador" aria-hidden="true">0 / 1500</span>
+              </div>
+              <textarea id="mensagem" name="message" placeholder="Conte um pouco sobre seu projeto, prazos e objetivos…" required aria-required="true" aria-describedby="mensagem-dica mensagem-erro" minlength="10" maxlength="1500"></textarea>
+              <p class="field-hint" id="mensagem-dica">Mínimo de 10 caracteres. Não inclua dados sensíveis (saúde, documentos, senhas ou dados bancários).</p>
+              <p class="field-error" id="mensagem-erro" aria-live="polite"></p>
             </div>
-            <button type="submit" class="btn-primary form-submit">
-              Enviar mensagem
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+
+            <div class="privacy-note" id="privacyNote">
+              <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+              <div>
+                <strong>Como tratamos seus dados</strong>
+                <p>Usamos nome, e-mail, empresa e mensagem <b>apenas para responder ao seu contato</b> e, se você quiser, preparar uma proposta. Não vendemos seus dados nem os usamos para marketing sem sua autorização. Guardamos as informações por até 12 meses e você pode pedir acesso, correção ou exclusão a qualquer momento.</p>
+              </div>
+            </div>
+
+            <div class="field consent-field">
+              <div class="consent">
+                <input type="checkbox" id="consentimento" name="consentimento_lgpd" value="Sim" required aria-required="true" aria-describedby="consentimento-erro privacyNote" />
+                <label for="consentimento">
+                  Li e concordo com a
+                  <a href="#politica-de-privacidade" class="inline-link" data-open-dialog="dlgPrivacy">Política de Privacidade</a>
+                  e os
+                  <a href="#termos-de-uso" class="inline-link" data-open-dialog="dlgTerms">Termos de Uso</a>,
+                  e autorizo o uso dos meus dados para retorno deste contato. <span class="req" aria-hidden="true">*</span>
+                </label>
+              </div>
+              <p class="field-error" id="consentimento-erro" aria-live="polite"></p>
+            </div>
+
+            <button type="submit" class="btn-primary form-submit" id="formSubmit">
+              <span class="submit-label">Enviar mensagem</span>
+              <span class="spinner" aria-hidden="true"></span>
+              <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
             </button>
+            <div class="form-status" id="formStatus" role="status" aria-live="polite" tabindex="-1"></div>
           </form>
         </div>
       </div>
     </section>
+  </div>
+  </main>
 
-    <!-- FOOTER -->
+  <!-- FOOTER -->
     <footer class="site-footer" id="siteFooter">
       <div class="container footer-cta reveal">
         <div>
-          <span class="avail"><i></i>Disponível para novos projetos</span>
+          <span class="avail"><i aria-hidden="true"></i>Disponível para novos projetos</span>
           <h2>Vamos construir algo <span class="gold">extraordinário</span> juntos?</h2>
         </div>
         <a href="#contato" class="btn-primary magnetic">
@@ -483,25 +566,25 @@
           </a>
           <p class="footer-tagline">Sites e sistemas sob medida, com design premium e performance de verdade. A gente bota seu negócio na tela.</p>
           <div class="footer-social">
-            <a href="https://www.instagram.com/np_code.solutions/" target="_blank" rel="noopener" class="social-icon" aria-label="Instagram" data-label="Instagram">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <a href="https://www.instagram.com/np_code.solutions/" target="_blank" rel="noopener" class="social-icon" aria-label="Instagram (abre em nova aba)" data-label="Instagram">
+              <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
                 <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
                 <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
               </svg>
             </a>
             <a href="#" target="_blank" rel="noopener" class="social-icon" aria-label="Facebook" data-label="Facebook">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
               </svg>
             </a>
-            <a href="https://wa.me/5521974845065" target="_blank" rel="noopener" class="social-icon" aria-label="WhatsApp" data-label="WhatsApp">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <a href="https://wa.me/5521974845065" target="_blank" rel="noopener" class="social-icon" aria-label="WhatsApp (abre em nova aba)" data-label="WhatsApp">
+              <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
               </svg>
             </a>
             <a href="mailto:contato@npcodesolutions.com.br" class="social-icon" aria-label="E-mail" data-label="E-mail">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
                 <polyline points="22,6 12,13 2,6"/>
               </svg>
@@ -509,7 +592,7 @@
           </div>
         </div>
         <div class="footer-col reveal" style="transition-delay:.1s">
-          <h4>Navegação</h4>
+          <h3>Navegação</h3>
           <ul class="footer-links">
             <li><a href="#sobre">Sobre</a></li>
             <li><a href="#servicos">Serviços</a></li>
@@ -519,10 +602,10 @@
           </ul>
         </div>
         <div class="footer-col reveal" style="transition-delay:.2s">
-          <h4>Contato</h4>
+          <h3>Contato</h3>
           <ul class="footer-links">
             <li><a href="mailto:contato@npcodesolutions.com.br">contato@npcodesolutions.com.br</a></li>
-            <li><a href="https://wa.me/5521974845065" target="_blank" rel="noopener">+55 (21) 97484-5065</a></li>
+            <li><a href="https://wa.me/5521974845065" target="_blank" rel="noopener">+55 (21) 97484-5065<span class="sr-only"> (WhatsApp, abre em nova aba)</span></a></li>
             <li><span>Rio de Janeiro, RJ, Brasil</span></li>
             <li><span>Seg a Sex, 9h às 18h</span></li>
           </ul>
@@ -533,13 +616,188 @@
 
       <div class="container footer-bottom">
         <p class="footer-copy">© 2026 NP Code Solutions. Todos os direitos reservados.</p>
-        <a href="#inicio" class="to-top" aria-label="Voltar ao topo">
+        <ul class="footer-legal">
+          <li><a href="#politica-de-privacidade" data-open-dialog="dlgPrivacy">Política de Privacidade</a></li>
+          <li><a href="#termos-de-uso" data-open-dialog="dlgTerms">Termos de Uso</a></li>
+          <li><button type="button" class="footer-a11y" data-open-a11y>Acessibilidade</button></li>
+        </ul>
+        <a href="#inicio" class="to-top">
           Voltar ao topo
-          <span class="to-top-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg></span>
+          <span class="to-top-icon" aria-hidden="true"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg></span>
         </a>
       </div>
     </footer>
+
+  <!-- ACCESSIBILITY PANEL -->
+  <div class="a11y" id="a11y">
+    <button type="button" class="a11y-fab" id="a11yToggle" aria-expanded="false" aria-controls="a11yPanel" aria-label="Opções de acessibilidade">
+      <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="4.5" r="1.6" fill="currentColor"/><path d="M5 8.5c2.3.6 4.6.9 7 .9s4.7-.3 7-.9"/><path d="M12 9.4v4.6"/><path d="m9 21 3-7 3 7"/></svg>
+    </button>
+    <div class="a11y-panel" id="a11yPanel" role="region" aria-labelledby="a11yTitle" hidden>
+      <div class="a11y-head">
+        <h2 id="a11yTitle">Acessibilidade</h2>
+        <button type="button" class="a11y-close" id="a11yClose" aria-label="Fechar opções de acessibilidade">
+          <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="a11y-group" role="group" aria-labelledby="a11yFontLabel">
+        <span class="a11y-label" id="a11yFontLabel">Tamanho do texto</span>
+        <div class="a11y-scale">
+          <button type="button" data-a11y-scale="-1" aria-label="Diminuir texto">A−</button>
+          <output id="a11yScaleValue" aria-live="polite">100%</output>
+          <button type="button" data-a11y-scale="1" aria-label="Aumentar texto">A+</button>
+        </div>
+      </div>
+      <div class="a11y-options">
+        <button type="button" class="a11y-opt" data-a11y-toggle="contrast" aria-pressed="false">
+          <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 3v18a9 9 0 0 0 0-18z" fill="currentColor"/></svg>
+          Alto contraste
+        </button>
+        <button type="button" class="a11y-opt" data-a11y-toggle="motion" aria-pressed="false">
+          <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+          Pausar animações
+        </button>
+        <button type="button" class="a11y-opt" data-a11y-toggle="links" aria-pressed="false">
+          <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 4v7a6 6 0 0 0 12 0V4"/><line x1="4" y1="21" x2="20" y2="21"/></svg>
+          Destacar links
+        </button>
+        <button type="button" class="a11y-opt" data-a11y-toggle="readable" aria-pressed="false">
+          <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg>
+          Fonte legível
+        </button>
+      </div>
+      <button type="button" class="a11y-reset" id="a11yReset">Restaurar padrão</button>
+    </div>
   </div>
+
+  <!-- PRIVACY POLICY -->
+  <dialog class="legal" id="dlgPrivacy" aria-labelledby="dlgPrivacyTitle">
+    <div class="legal-head">
+      <div>
+        <span class="legal-kicker">LGPD · Lei nº 13.709/2018</span>
+        <h2 id="dlgPrivacyTitle">Política de Privacidade</h2>
+        <p class="legal-date">Última atualização: 30 de setembro de 2026</p>
+      </div>
+      <button type="button" class="legal-close" data-close-dialog aria-label="Fechar Política de Privacidade">
+        <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="legal-body" tabindex="0" role="document" aria-label="Texto da Política de Privacidade">
+      <div class="legal-summary">
+        <strong>Resumo em 30 segundos</strong>
+        <ul>
+          <li>Coletamos só o que você digita no formulário de contato.</li>
+          <li>Usamos esses dados apenas para responder você e, se pedir, enviar uma proposta.</li>
+          <li>Não vendemos, não alugamos e não usamos seus dados para anúncios.</li>
+          <li>Você pode pedir acesso, correção ou exclusão a qualquer momento.</li>
+        </ul>
+      </div>
+
+      <h3>1. Quem somos</h3>
+      <p>A <strong>NP Code Solutions</strong>, com atuação no Rio de Janeiro/RJ, é a controladora dos dados pessoais tratados por meio deste site, nos termos da Lei Geral de Proteção de Dados Pessoais (LGPD, Lei nº 13.709/2018). Contato do encarregado pelo tratamento de dados: <a href="mailto:contato@npcodesolutions.com.br">contato@npcodesolutions.com.br</a>.</p>
+
+      <h3>2. Quais dados coletamos</h3>
+      <p>Pelo formulário de contato, coletamos somente os dados que você fornece voluntariamente:</p>
+      <ul>
+        <li><strong>Nome</strong> (obrigatório);</li>
+        <li><strong>E-mail</strong> (obrigatório);</li>
+        <li><strong>Empresa</strong> e <strong>serviço de interesse</strong> (opcionais);</li>
+        <li><strong>Mensagem</strong> com a descrição do seu projeto;</li>
+        <li>Registro do seu <strong>consentimento</strong> (data e hora do envio).</li>
+      </ul>
+      <p>Pedimos que você não envie dados pessoais sensíveis (como informações de saúde, origem racial, convicção religiosa, dados biométricos, documentos ou dados bancários) no campo de mensagem.</p>
+
+      <h3>3. Para que usamos seus dados</h3>
+      <ul>
+        <li>Responder à sua solicitação de contato;</li>
+        <li>Entender seu projeto e elaborar orçamento ou proposta comercial, quando solicitado;</li>
+        <li>Manter o histórico da conversa para dar continuidade ao atendimento.</li>
+      </ul>
+      <p>Não utilizamos seus dados para envio de newsletters, publicidade ou perfis de comportamento sem uma autorização específica e separada.</p>
+
+      <h3>4. Base legal</h3>
+      <p>O tratamento se baseia no seu <strong>consentimento</strong> (art. 7º, I, da LGPD), manifestado ao marcar a caixa de concordância do formulário, e na execução de <strong>procedimentos preliminares relacionados a contrato</strong> a seu pedido (art. 7º, V), quando você solicita um orçamento.</p>
+
+      <h3>5. Com quem compartilhamos</h3>
+      <p>Não vendemos nem cedemos seus dados. Para que a mensagem chegue até nós, o formulário utiliza o serviço <strong>FormSubmit</strong> (formsubmit.co), que atua apenas como operador na entrega do e-mail, e nosso provedor de e-mail. Esses serviços podem armazenar dados em servidores fora do Brasil; nesses casos, a transferência internacional ocorre para cumprir a finalidade que você solicitou (art. 33 da LGPD). Também poderemos compartilhar dados quando exigido por lei ou por ordem de autoridade competente.</p>
+
+      <h3>6. Por quanto tempo guardamos</h3>
+      <p>Mantemos os dados do contato por até <strong>12 meses</strong> após a última interação. Se o contato resultar em contrato, os dados passam a seguir os prazos necessários ao cumprimento de obrigações legais e contratuais. Encerrado o prazo, os dados são excluídos ou anonimizados.</p>
+
+      <h3>7. Seus direitos</h3>
+      <p>Conforme o art. 18 da LGPD, você pode, a qualquer momento e gratuitamente, solicitar:</p>
+      <ul>
+        <li>Confirmação da existência de tratamento e acesso aos seus dados;</li>
+        <li>Correção de dados incompletos, inexatos ou desatualizados;</li>
+        <li>Anonimização, bloqueio ou eliminação de dados desnecessários ou excessivos;</li>
+        <li>Portabilidade dos dados a outro fornecedor;</li>
+        <li>Eliminação dos dados tratados com base no consentimento;</li>
+        <li>Informação sobre com quem compartilhamos seus dados;</li>
+        <li>Revogação do consentimento.</li>
+      </ul>
+      <p>Para exercer seus direitos, escreva para <a href="mailto:contato@npcodesolutions.com.br?subject=LGPD%20-%20Solicita%C3%A7%C3%A3o%20de%20titular">contato@npcodesolutions.com.br</a> com o assunto “LGPD”. Respondemos em até 15 dias. Você também pode apresentar reclamação à Autoridade Nacional de Proteção de Dados (ANPD).</p>
+
+      <h3>8. Cookies e armazenamento local</h3>
+      <p>Este site <strong>não utiliza cookies de rastreamento nem ferramentas de publicidade</strong>. Utilizamos apenas o armazenamento local do seu navegador (localStorage) para lembrar suas preferências de acessibilidade, como tamanho do texto e contraste. Essa informação fica somente no seu dispositivo e pode ser apagada nas configurações do navegador ou pelo botão “Restaurar padrão” do painel de acessibilidade. As fontes do site são carregadas pelo Google Fonts, que pode registrar dados técnicos da requisição, como o endereço IP.</p>
+
+      <h3>9. Segurança</h3>
+      <p>O site é servido por conexão criptografada (HTTPS) e o acesso às mensagens recebidas é restrito à equipe responsável pelo atendimento. Adotamos medidas técnicas e administrativas razoáveis para proteger seus dados contra acessos não autorizados, perda ou alteração.</p>
+
+      <h3>10. Alterações desta política</h3>
+      <p>Podemos atualizar esta política para refletir mudanças legais ou no nosso serviço. A data da última atualização estará sempre indicada no topo deste documento.</p>
+    </div>
+    <div class="legal-foot">
+      <button type="button" class="btn-primary" data-close-dialog>Entendi</button>
+    </div>
+  </dialog>
+
+  <!-- TERMS OF USE -->
+  <dialog class="legal" id="dlgTerms" aria-labelledby="dlgTermsTitle">
+    <div class="legal-head">
+      <div>
+        <span class="legal-kicker">Condições de uso do site</span>
+        <h2 id="dlgTermsTitle">Termos de Uso</h2>
+        <p class="legal-date">Última atualização: 30 de setembro de 2026</p>
+      </div>
+      <button type="button" class="legal-close" data-close-dialog aria-label="Fechar Termos de Uso">
+        <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="legal-body" tabindex="0" role="document" aria-label="Texto dos Termos de Uso">
+      <h3>1. Aceitação</h3>
+      <p>Ao navegar neste site ou enviar o formulário de contato, você declara ter lido e concordado com estes Termos de Uso e com a <a href="#politica-de-privacidade" data-open-dialog="dlgPrivacy">Política de Privacidade</a>. Se não concordar, recomendamos não utilizar o formulário.</p>
+
+      <h3>2. Finalidade do site</h3>
+      <p>Este site apresenta os serviços da NP Code Solutions e oferece um canal de contato para solicitação de orçamentos. As informações publicadas têm caráter informativo e não constituem oferta vinculante. Prazos, valores e escopo de qualquer projeto são definidos exclusivamente em proposta comercial ou contrato específico.</p>
+
+      <h3>3. Uso do formulário</h3>
+      <p>Você se compromete a fornecer informações verdadeiras e a não utilizar o formulário para enviar conteúdo ilícito, ofensivo, spam, códigos maliciosos ou dados pessoais de terceiros sem autorização. Mensagens com esse conteúdo poderão ser descartadas.</p>
+
+      <h3>4. Propriedade intelectual</h3>
+      <p>Marca, logotipo, textos, layout, ilustrações e código deste site pertencem à NP Code Solutions e são protegidos pela legislação de direitos autorais e de propriedade industrial. É proibida a reprodução, total ou parcial, sem autorização prévia por escrito.</p>
+
+      <h3>5. Projetos do portfólio</h3>
+      <p>Os projetos exibidos no portfólio são apresentados apenas para fins de demonstração do nosso trabalho. Marcas, nomes e conteúdos desses projetos pertencem aos seus respectivos titulares.</p>
+
+      <h3>6. Links externos</h3>
+      <p>O site contém links para páginas de terceiros, como projetos de clientes, WhatsApp e redes sociais. Não nos responsabilizamos pelo conteúdo, disponibilidade ou práticas de privacidade desses sites, que possuem termos próprios.</p>
+
+      <h3>7. Disponibilidade e responsabilidade</h3>
+      <p>Trabalhamos para manter o site disponível e atualizado, mas não garantimos funcionamento ininterrupto ou livre de erros. A NP Code Solutions não se responsabiliza por danos decorrentes de indisponibilidade temporária, falhas de conexão do usuário ou uso indevido das informações aqui publicadas.</p>
+
+      <h3>8. Acessibilidade</h3>
+      <p>Buscamos seguir as diretrizes WCAG 2.2 (nível AA). Se encontrar alguma barreira de acesso, avise-nos pelo e-mail <a href="mailto:contato@npcodesolutions.com.br?subject=Acessibilidade">contato@npcodesolutions.com.br</a>.</p>
+
+      <h3>9. Alterações</h3>
+      <p>Estes termos podem ser atualizados a qualquer momento. A versão vigente é sempre a publicada nesta página.</p>
+
+      <h3>10. Legislação e foro</h3>
+      <p>Estes termos são regidos pelas leis da República Federativa do Brasil, incluindo o Código de Defesa do Consumidor e o Marco Civil da Internet (Lei nº 12.965/2014). Fica eleito o foro da comarca do Rio de Janeiro/RJ, ressalvado o direito do consumidor de ajuizar ação em seu domicílio.</p>
+    </div>
+    <div class="legal-foot">
+      <button type="button" class="btn-primary" data-close-dialog>Entendi</button>
+    </div>
+  </dialog>
 
   <script src="script.js"></script>
 </body>
