@@ -168,7 +168,7 @@ ul {
 }
 
 .nav-logo img {
-  height: 40px;
+  height: 26px;
   width: auto;
   transition: transform .5s var(--ease);
 }
@@ -340,7 +340,8 @@ ul {
   transition: color var(--transition);
 }
 
-.mobile-menu a:hover {
+.mobile-menu a:hover,
+.mobile-menu a[aria-current="page"] {
   color: var(--gold-hi);
 }
 
@@ -2032,7 +2033,8 @@ select option {
 }
 
 .footer-brand .footer-logo img {
-  height: 36px;
+  height: 38px;
+  width: auto;
   margin-bottom: 1.2rem;
   transition: transform .5s var(--ease), filter .5s ease;
 }
@@ -3202,6 +3204,21 @@ html.a11y-motion .about-marquee {
 }
 
 @media (max-width: 900px) {
+  /* Six links plus the CTA no longer fit in one row: switch to the menu */
+  .nav-links {
+    display: none;
+  }
+  .hamburger {
+    display: flex;
+  }
+  .mobile-menu {
+    display: flex;
+  }
+  /* Large blurred blobs are costly to animate on phones and tablets */
+  .blob {
+    animation: none;
+    filter: blur(70px);
+  }
   .process-steps {
     grid-template-columns: 1fr 1fr;
     gap: 2.5rem 1rem;
@@ -3226,15 +3243,6 @@ html.a11y-motion .about-marquee {
   }
   .process-steps {
     grid-template-columns: 1fr;
-  }
-  .nav-links {
-    display: none;
-  }
-  .hamburger {
-    display: flex;
-  }
-  .mobile-menu {
-    display: flex;
   }
   h1 {
     font-size: 2.5rem;
@@ -3759,6 +3767,21 @@ html.a11y-contrast .fd-cred {
   }
   .fd-quote p {
     font-size: 1rem;
+  }
+  .fd-card {
+    max-width: 360px;
+  }
+  .fd-role {
+    font-size: .72rem;
+    letter-spacing: .1em;
+    line-height: 1.7;
+  }
+  .fd-bio p {
+    font-size: 1rem;
+    line-height: 1.75;
+  }
+  .fd-stack {
+    gap: 1.2rem;
   }
   .fd-actions > a {
     flex: 1 1 100%;

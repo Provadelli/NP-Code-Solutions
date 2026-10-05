@@ -33,7 +33,7 @@ document.addEventListener('keydown', (e) => {
 });
 
 // Leaving the mobile breakpoint with the menu open would strand the inert page.
-window.matchMedia('(min-width: 601px)').addEventListener('change', (e) => {
+window.matchMedia('(min-width: 901px)').addEventListener('change', (e) => {
   if (e.matches && ham.classList.contains('open')) setMenu(false, { returnFocus: false });
 });
 
@@ -56,7 +56,9 @@ document.querySelectorAll('.reveal, .process-steps, .footer-line').forEach(el =>
   // Only in-page anchors track the scroll; links to other pages keep their own state.
   const navLinks = document.querySelectorAll('.nav-links a[href^="#"]:not(.nav-cta)');
 
+  let ticking = false;
   function update() {
+    ticking = false;
     nav.classList.toggle('scrolled', window.scrollY > 24);
 
     const y = window.scrollY + 140;
@@ -73,7 +75,10 @@ document.querySelectorAll('.reveal, .process-steps, .footer-line').forEach(el =>
     });
   }
 
-  window.addEventListener('scroll', update, { passive: true });
+  // One measurement per frame, however many scroll events fire.
+  window.addEventListener('scroll', () => {
+    if (!ticking) { ticking = true; requestAnimationFrame(update); }
+  }, { passive: true });
   update();
 })();
 
@@ -116,7 +121,7 @@ document.querySelectorAll('.reveal, .process-steps, .footer-line').forEach(el =>
     'Landing pages',
     'E-commerce',
     'Sistemas web',
-    'Aplicativos',
+    'Aplicativos web',
     'Identidade digital',
   ];
   const CHARS = '!@#$%^&*()_+-=[]{}|;:,.<>?/~░▒▓█▀▄■□▪▫●○◆◇';
@@ -335,10 +340,18 @@ document.querySelectorAll('.reveal, .process-steps, .footer-line').forEach(el =>
   }
 
   function setSize() {
-    size = { w: section.clientWidth, h: section.clientHeight };
-    canvas.width = size.w;
-    canvas.height = size.h;
+    const w = section.clientWidth, h = section.clientHeight;
+    if (w === size.w && h === size.h) return;
+    size = { w, h };
+    // Sharp glyphs on high-density screens, capped to keep the fill cost sane.
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    canvas.width = Math.round(w * dpr);
+    canvas.height = Math.round(h * dpr);
+    canvas.style.width = w + 'px';
+    canvas.style.height = h + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     makeParticles();
+    if (!running) draw(performance.now());
   }
 
   function draw(now) {
@@ -377,8 +390,17 @@ document.querySelectorAll('.reveal, .process-steps, .footer-line').forEach(el =>
     }
   }
 
+  // The loop only runs while the section is on screen and the tab is visible.
+  let running = false;
+  let onScreen = false;
   function animate(now) {
+    if (!onScreen || document.hidden) { running = false; return; }
     draw(now);
+    requestAnimationFrame(animate);
+  }
+  function start() {
+    if (running || reduceMotion || !onScreen || document.hidden) return;
+    running = true;
     requestAnimationFrame(animate);
   }
 
@@ -386,15 +408,15 @@ document.querySelectorAll('.reveal, .process-steps, .footer-line').forEach(el =>
   window.addEventListener('resize', setSize);
 
   if (!reduceMotion) {
-    window.addEventListener('mousemove', (e) => {
+    section.addEventListener('pointermove', (e) => {
       const rect = section.getBoundingClientRect();
       mouse.x = e.clientX - rect.left;
       mouse.y = e.clientY - rect.top;
-    });
+    }, { passive: true });
+    section.addEventListener('pointerleave', () => { mouse.x = mouse.y = -9999; });
 
-    requestAnimationFrame(animate);
-  } else {
-    draw(0);
+    new IntersectionObserver(([e]) => { onScreen = e.isIntersecting; start(); }).observe(section);
+    document.addEventListener('visibilitychange', start);
   }
 })();
 
@@ -558,7 +580,16 @@ document.querySelectorAll('.reveal, .process-steps, .footer-line').forEach(el =>
 
   const targetSpeed = () => (hovering || userPaused || focusHold || motionOff() ? 0 : BASE_SPEED);
 
-  new IntersectionObserver(([e]) => { visible = e.isIntersecting; }, { threshold: 0 }).observe(marquee);
+  // Off screen the loop stops entirely and resumes when the strip comes back.
+  let looping = false;
+  const resume = () => {
+    if (looping || !visible || document.hidden) return;
+    looping = true;
+    last = performance.now();
+    requestAnimationFrame(frame);
+  };
+  new IntersectionObserver(([e]) => { visible = e.isIntersecting; resume(); }, { threshold: 0 }).observe(marquee);
+  document.addEventListener('visibilitychange', resume);
 
   marquee.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse') hovering = true; });
   marquee.addEventListener('pointerleave', () => { hovering = false; });
@@ -640,32 +671,31 @@ document.querySelectorAll('.reveal, .process-steps, .footer-line').forEach(el =>
   }, true);
 
   function frame(now) {
+    if (!visible || document.hidden) { looping = false; return; }
     const dt = Math.min(0.05, (now - last) / 1000);
     last = now;
-    if (visible) {
-      speed += (targetSpeed() - speed) * 0.06;
-      if (!down) x -= speed * dt;
-      if (setW && !focusHold) {
-        while (x <= -setW) { x += setW; if (down) down.start += setW; }
-        while (x > 0) { x -= setW; if (down) down.start -= setW; }
-      }
-      track.style.transform = `translate3d(${x.toFixed(2)}px, 0, 0)`;
+    speed += (targetSpeed() - speed) * 0.06;
+    if (!down) x -= speed * dt;
+    if (setW && !focusHold) {
+      while (x <= -setW) { x += setW; if (down) down.start += setW; }
+      while (x > 0) { x -= setW; if (down) down.start -= setW; }
+    }
+    track.style.transform = `translate3d(${x.toFixed(2)}px, 0, 0)`;
 
-      // The light sits at the viewport centre; each image catches it as it passes.
-      const vr = marquee.getBoundingClientRect();
-      const centre = vr.left + vr.width / 2;
-      for (let i = 0; i < cards.length; i++) {
-        const r = cards[i].getBoundingClientRect();
-        if (r.right < vr.left - 50 || r.left > vr.right + 50) continue;
-        const s = ((centre - r.left) / r.width) * 100;
-        const glow = Math.max(0, 1 - Math.abs(r.left + r.width / 2 - centre) / (r.width * 0.9));
-        imgs[i].style.setProperty('--s', s.toFixed(1) + '%');
-        cards[i].style.setProperty('--glow', glow.toFixed(3));
-      }
+    // The light sits at the viewport centre; each image catches it as it passes.
+    const vr = marquee.getBoundingClientRect();
+    const centre = vr.left + vr.width / 2;
+    for (let i = 0; i < cards.length; i++) {
+      const r = cards[i].getBoundingClientRect();
+      if (r.right < vr.left - 50 || r.left > vr.right + 50) continue;
+      const s = ((centre - r.left) / r.width) * 100;
+      const glow = Math.max(0, 1 - Math.abs(r.left + r.width / 2 - centre) / (r.width * 0.9));
+      imgs[i].style.setProperty('--s', s.toFixed(1) + '%');
+      cards[i].style.setProperty('--glow', glow.toFixed(3));
     }
     requestAnimationFrame(frame);
   }
-  requestAnimationFrame(frame);
+  resume();
 
   /* Each card crossfades between its two screenshots */
   let flip = false;
