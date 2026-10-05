@@ -53,7 +53,8 @@ document.querySelectorAll('.reveal, .process-steps, .footer-line').forEach(el =>
 (() => {
   const nav = document.getElementById('siteNav');
   const sections = document.querySelectorAll('section[id]');
-  const navLinks = document.querySelectorAll('.nav-links a:not(.nav-cta)');
+  // Only in-page anchors track the scroll; links to other pages keep their own state.
+  const navLinks = document.querySelectorAll('.nav-links a[href^="#"]:not(.nav-cta)');
 
   function update() {
     nav.classList.toggle('scrolled', window.scrollY > 24);
@@ -749,6 +750,30 @@ if (!reduceMotion) {
     el.addEventListener('pointerleave', () => { el.style.transform = ''; });
   });
 }
+
+/* ── FOUNDER CARD: tilt + light ── */
+(() => {
+  const wrap = document.getElementById('fdCardWrap');
+  const card = document.getElementById('fdCard');
+  if (!wrap || !card) return;
+  const photo = card.querySelector('.fd-photo');
+
+  wrap.addEventListener('pointermove', (e) => {
+    if (e.pointerType !== 'mouse' || motionOff()) return;
+    const r = card.getBoundingClientRect();
+    const nx = clamp((e.clientX - r.left) / r.width - 0.5, -0.5, 0.5);
+    const ny = clamp((e.clientY - r.top) / r.height - 0.5, -0.5, 0.5);
+    card.style.setProperty('--rx', `${(nx * 12).toFixed(2)}deg`);
+    card.style.setProperty('--ry', `${(-ny * 10).toFixed(2)}deg`);
+    const pr = photo.getBoundingClientRect();
+    photo.style.setProperty('--mx', `${e.clientX - pr.left}px`);
+    photo.style.setProperty('--my', `${e.clientY - pr.top}px`);
+  });
+  wrap.addEventListener('pointerleave', () => {
+    card.style.setProperty('--rx', '0deg');
+    card.style.setProperty('--ry', '0deg');
+  });
+})();
 
 /* ── FOOTER WORDMARK GLOW ── */
 (() => {
